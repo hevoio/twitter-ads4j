@@ -1,0 +1,13 @@
+package com.hevodata.twitterads4j.internal.models4j;
+
+/**
+ * Created with IntelliJ IDEA.
+ *
+ * Date: 10/13/13
+ * Time: 4:53 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public enum LocationType {
+
+    POSTAL_CODE, COUNTRIES, METROS, REGIONS
+}
