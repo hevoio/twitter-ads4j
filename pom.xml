@@ -22,6 +22,15 @@
 		</license>
 	</licenses>
 
+    <developers>
+        <developer>
+            <name>Hevo Data Inc</name>
+            <email>open-source@hevodata.com</email>
+            <organization>Hevo Data Inc.</organization>
+            <organizationUrl>https://hevodata.com</organizationUrl>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -95,10 +104,6 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.2</version>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -156,6 +161,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
             </plugin>
 
             <plugin>
