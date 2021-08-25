@@ -7,11 +7,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hevodata</groupId>
-    <artifactId>twitter4j-ads</artifactId>
-    <version>1.0</version>
+    <artifactId>twitter-ads4j</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>twitter4j-ads</name>
+    <name>twitter-ads4j</name>
     <description>TwitterAds sdk</description>
 	<url>https://github.com/hevoio/twitter-ads4j</url>
 
