@@ -1,7 +1,7 @@
 package twitter4jads.internal.models4j;
 
 public final class Version {
-    private static final String VERSION = "9.0";
+    private static final String VERSION = "10.0";
     private static final String TITLE = "Twitter4JAds";
 
     private Version() {

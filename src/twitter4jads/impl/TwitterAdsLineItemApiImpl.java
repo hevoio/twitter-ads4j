@@ -36,50 +36,6 @@ public class TwitterAdsLineItemApiImpl implements TwitterAdsLineItemApi {
     }
 
     @Override
-    public BaseAdsResponse<LineItem> createLineItem(String accountId, LineItem lineItem) throws TwitterException {
-        final String campaignId = lineItem.getCampaignId();
-        final boolean automaticallySelectBid = lineItem.isAutomaticallySelectBid();
-
-        Long bidAmountLocalMicro = null;
-        BidType bidType;
-        if (!automaticallySelectBid) {
-            bidAmountLocalMicro = lineItem.getBidAmtInMicro();
-            bidType = lineItem.getBidType();
-        } else {
-            bidType = BidType.AUTO;
-        }
-
-        final Sentiments includeSentiment = lineItem.getSentiment();
-        final Boolean matchRelevantPopularQueries = lineItem.getMatchRelevantPopularQueries();
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-
-        final List<HttpParameter> params =
-                validateCreateLineItemParameters(Optional.ofNullable(campaignId), bidType, Optional.ofNullable(bidAmountLocalMicro),
-                        automaticallySelectBid, Optional.ofNullable(lineItem.getProductType()),
-                        lineItem.getPlacements(), lineItem.getStatus(), Optional.ofNullable(includeSentiment),
-                        Optional.ofNullable(matchRelevantPopularQueries), Optional.ofNullable(lineItem.getObjective()),
-                        Optional.ofNullable(lineItem.getChargeBy()), Optional.ofNullable(lineItem.getBidUnit()),
-                        Optional.ofNullable(lineItem.getOptimization()), Optional.ofNullable(lineItem.getAdvertiserDomain()),
-                        lineItem.getCategories(), lineItem.getWebEventTag(), lineItem.getName(),
-                        Optional.ofNullable(lineItem.getStartTime()), Optional.ofNullable(lineItem.getEndTime()),
-                        lineItem.getTargetCpaLocalMicro(), lineItem.getBudget(), lineItem.getTrackingTags(), lineItem.getAudienceExpansion());
-        HttpParameter[] parameters = null;
-        if (!params.isEmpty()) {
-            parameters = params.toArray(new HttpParameter[params.size()]);
-        }
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_LINE_ITEMS;
-        final HttpResponse httpResponse = twitterAdsClient.postRequest(baseUrl, parameters);
-        try {
-            Type type = new TypeToken<BaseAdsResponse<LineItem>>() {
-            }.getType();
-            return TwitterAdUtil.constructBaseAdsResponse(httpResponse, httpResponse.asString(), type);
-        } catch (IOException e) {
-            throw new TwitterException("Failed to parse line item.");
-        }
-    }
-
-    @Override
     public BaseAdsResponse<LineItem> updateLineItem(String accountId, String lineItemId, BidType bidType, boolean automaticallySelectBid,
                                                     Optional<Long> bidAmountLocalMicro, EntityStatus status, Optional<Sentiments> includeSentiment,
                                                     Optional<Boolean> matchRelevantPopularQueries, Optional<String> chargeBy,

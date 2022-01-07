@@ -49,15 +49,6 @@ public interface TwitterAdsLineItemApi {
      */
     BaseAdsResponse<LineItem> getLineItemById(String accountId, String lineItemId, boolean withDeleted) throws TwitterException;
 
-
-    /**
-     * @param lineItem A LineItem object representing the line item to be created.
-     * @return created line item
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/line_items">https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/line_items</a>
-     */
-    BaseAdsResponse<LineItem> createLineItem(String accountId, LineItem lineItem) throws TwitterException;
-
     /**
      * @param accountId                The identifier for the leveraged account.
      * @param lineItemId               The line item identifier of the line item to update.
