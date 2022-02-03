@@ -67,12 +67,6 @@ public class LineItem extends TwitterEntity implements Serializable {
     @SerializedName("updated_at")
     private Date updatedAt;
 
-    @SerializedName("automatically_select_bid")
-    private boolean automaticallySelectBid;
-
-    @SerializedName("bid_type")
-    private BidType bidType;
-
     @SerializedName("charge_by")
     private String chargeBy;
 
@@ -103,14 +97,14 @@ public class LineItem extends TwitterEntity implements Serializable {
     @SerializedName("total_budget_amount_local_micro")
     private Long budget;
 
-    @SerializedName("tracking_tags")
-    private List<TrackingTag> trackingTags;
-
     @SerializedName("entity_status")
     private EntityStatus status;
 
     @SerializedName("audience_expansion")
     private String audienceExpansion;
+
+    @SerializedName("bid_strategy")
+    private BidStrategy bidStrategy;
 
     public String getCreativeSource() {
         return creativeSource;
@@ -240,22 +234,6 @@ public class LineItem extends TwitterEntity implements Serializable {
         this.productType = productType;
     }
 
-    public boolean isAutomaticallySelectBid() {
-        return automaticallySelectBid;
-    }
-
-    public void setAutomaticallySelectBid(boolean automaticallySelectBid) {
-        this.automaticallySelectBid = automaticallySelectBid;
-    }
-
-    public BidType getBidType() {
-        return bidType;
-    }
-
-    public void setBidType(BidType bidType) {
-        this.bidType = bidType;
-    }
-
     public String getChargeBy() {
         return chargeBy;
     }
@@ -312,14 +290,6 @@ public class LineItem extends TwitterEntity implements Serializable {
         this.advertiserUserId = advertiserUserId;
     }
 
-    public List<TrackingTag> getTrackingTags() {
-        return trackingTags;
-    }
-
-    public void setTrackingTags(List<TrackingTag> trackingTags) {
-        this.trackingTags = trackingTags;
-    }
-
     public Date getStartTime() {
         return startTimeInUTC;
     }
@@ -368,6 +338,10 @@ public class LineItem extends TwitterEntity implements Serializable {
         this.audienceExpansion = audienceExpansion;
     }
 
+    public BidStrategy getBidStrategy() { return bidStrategy; }
+
+    public void setBidStrategy(BidStrategy bidStrategy) { this.bidStrategy = bidStrategy; }
+
     @Override
     public String toString() {
         return "LineItem{" +
@@ -389,8 +363,6 @@ public class LineItem extends TwitterEntity implements Serializable {
                 ", suggestedLowCpeBidInMicro=" + suggestedLowCpeBidInMicro +
                 ", targetCpaLocalMicro=" + targetCpaLocalMicro +
                 ", updatedAt=" + updatedAt +
-                ", automaticallySelectBid=" + automaticallySelectBid +
-                ", bidType=" + bidType +
                 ", chargeBy='" + chargeBy + '\'' +
                 ", bidUnit='" + bidUnit + '\'' +
                 ", advertiserDomain='" + advertiserDomain + '\'' +
@@ -401,6 +373,7 @@ public class LineItem extends TwitterEntity implements Serializable {
                 ", optimization='" + optimization + '\'' +
                 ", creativeSource='" + creativeSource + '\'' +
                 ", budget='" + budget + '\'' +
+                ", bidStrategy='" + bidStrategy + '\'' +
                 '}';
     }
 }
