@@ -7,10 +7,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hevodata</groupId>
-    <artifactId>twitter4j-ads</artifactId>
+    <artifactId>twitter-ads4j</artifactId>
     <version>2.0.0</version>
     <packaging>jar</packaging>
-    <name>twitter4j-ads</name>
+    <name>twitter-ads4j</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
