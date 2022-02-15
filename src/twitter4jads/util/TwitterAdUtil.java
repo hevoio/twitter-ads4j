@@ -11,7 +11,6 @@ import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.RateLimitStatus;
 import twitter4jads.models.ads.TrackingTag;
 import twitter4jads.models.ads.TwitterAdObjective;
-import twitter4jads.models.ads.audience.AudienceApiResponse;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -183,16 +182,6 @@ public final class TwitterAdUtil {
         RateLimitStatus rateLimitStatus = TwitterAdHttpUtils.createFromResponseHeader(httpResponse);
         baseResponse.setRateLimitStatus(rateLimitStatus);
         return baseResponse;
-    }
-
-    public static AudienceApiResponse constructAudienceApiResponse(HttpResponse httpResponse, String response) {
-        Gson gson = new Gson();
-        Type audienceApiResponseType = new TypeToken<AudienceApiResponse>() {
-        }.getType();
-        AudienceApiResponse audienceApiResponse = gson.fromJson(response, audienceApiResponseType);
-        RateLimitStatus rateLimitStatus = TwitterAdHttpUtils.createFromResponseHeader(httpResponse);
-        audienceApiResponse.setRateLimitStatus(rateLimitStatus);
-        return audienceApiResponse;
     }
 
     public static void reallySleep(long millis) {
