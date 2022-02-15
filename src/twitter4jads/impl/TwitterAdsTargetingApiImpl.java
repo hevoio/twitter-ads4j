@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import twitter4jads.internal.http.HttpParameter;
 import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.TwitterException;
-import twitter4jads.models.ads.tags.TwitterApplicationList;
 import twitter4jads.models.ads.targeting.TargetingParamRequest;
 import twitter4jads.models.ads.targeting.TargetingParamResponse;
 import twitter4jads.models.ads.targeting.TwitterTargetingOperator;
@@ -486,38 +485,6 @@ public class TwitterAdsTargetingApiImpl implements TwitterAdsTargetingApi {
         return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
     }
 
-    @Override
-    public BaseAdsListResponseIterable<TwitterApplicationList> getAllAppLists(String accountId) throws
-            TwitterException {
-        final List<HttpParameter> params = new ArrayList<>();
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_APP_LIST;
-        final Type type = new TypeToken<BaseAdsListResponse<TwitterApplicationList>>() {
-        }.getType();
-
-        return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
-    }
-
-    @Override
-    public BaseAdsResponse<TwitterApplicationList> getAllAppsListsById(String accountId, String listId) throws TwitterException {
-        //noinspection MismatchedQueryAndUpdateOfCollection
-        final List<HttpParameter> params = new ArrayList<>();
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_APP_LIST + listId;
-        final Type typeToken = new TypeToken<BaseAdsResponse<TwitterApplicationList>>() {
-        }.getType();
-
-        return twitterAdsClient.executeHttpRequest(baseUrl, params.toArray(new HttpParameter[params.size()]), typeToken, HttpVerb.GET);
-    }
-
-    @Override
-    public BaseAdsResponse<TwitterApplicationList> createNewApplicationList(String accountId, TwitterApplicationList twitterApplicationList) throws TwitterException {
-        final List<HttpParameter> params = validateAndCreateApplicationListParameters(twitterApplicationList);
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_APP_LIST;
-        final Type typeToken = new TypeToken<BaseAdsResponse<TwitterApplicationList>>() {
-        }.getType();
-
-        return twitterAdsClient.executeHttpRequest(baseUrl, params.toArray(new HttpParameter[params.size()]), typeToken, HttpVerb.POST);
-    }
-
     // ------------------------------------------------------------------- PRIVATE METHODS ---------------------------------------------------------
 
     @SuppressWarnings("Duplicates")
@@ -722,26 +689,6 @@ public class TwitterAdsTargetingApiImpl implements TwitterAdsTargetingApi {
         }
         if (cursor != null && cursor.isPresent()) {
             params.add(new HttpParameter(TwitterAdsConstants.PARAM_CURSOR, cursor.get()));
-        }
-        return params;
-    }
-
-    private List<HttpParameter> validateAndCreateApplicationListParameters(TwitterApplicationList twitterApplicationList) {
-        List<HttpParameter> params = new ArrayList<>();
-        if (TwitterAdUtil.isNotNullOrEmpty(twitterApplicationList.getName())) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_NAME, twitterApplicationList.getName()));
-        }
-        if (TwitterAdUtil.isNotEmpty(twitterApplicationList.getApps())) {
-            List<TwitterApplicationDetails> apps = twitterApplicationList.getApps();
-            List<String> appIdentifiers = Lists.newArrayList();
-            for (TwitterApplicationDetails twitterApplicationDetails : apps) {
-                if (TwitterAdUtil.isNotNullOrEmpty(twitterApplicationDetails.getAppIdentifier())) {
-                    appIdentifiers.add(twitterApplicationDetails.getAppIdentifier());
-                }
-            }
-            if (TwitterAdUtil.isNotEmpty(appIdentifiers)) {
-                params.add(new HttpParameter(TwitterAdsConstants.PARAM_APP_STORE_IDENTIFIERS, TwitterAdUtil.getCsv(appIdentifiers)));
-            }
         }
         return params;
     }

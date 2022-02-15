@@ -5,7 +5,6 @@ import twitter4jads.BaseAdsResponse;
 import twitter4jads.internal.models4j.LocationType;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.*;
-import twitter4jads.models.ads.tags.TwitterApplicationList;
 import twitter4jads.models.ads.targeting.TargetingParamRequest;
 import twitter4jads.models.ads.targeting.TargetingParamResponse;
 import twitter4jads.models.ads.targeting.TwitterTargetingOperator;
@@ -263,34 +262,6 @@ public interface TwitterAdsTargetingApi {
      * @see <a href="https://dev.twitter.com/ads/reference/get/targeting_criteria/app_store_categories">https://dev.twitter.com/ads/reference/get/targeting_criteria/app_store_categories</a>
      */
     List<TwitterAppStore> searchAppStoreCategories(String q, Optional<TwitterOSType> osType) throws TwitterException;
-
-    /**
-     * @param accountId The identifier for the leveraged account.
-     * @return all app lists associated with the specified account ID
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/app_lists">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/app_lists</a>
-     */
-    BaseAdsListResponseIterable<TwitterApplicationList> getAllAppLists(String accountId) throws TwitterException;
-
-    /**
-     * @param accountId The identifier for the leveraged account.
-     * @param listId    A specific app list ID.
-     * @return an application list given a specific list ID
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/app_lists">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/app_lists</a>
-     */
-    BaseAdsResponse<TwitterApplicationList> getAllAppsListsById(String accountId, String listId) throws TwitterException;
-
-    /**
-     * @param accountId              The identifier for the leveraged account.
-     * @param twitterApplicationList A list of applications to add to app list.
-     * @return response of creating a new application list
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/app_lists">https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/app_lists</a>
-     */
-    BaseAdsResponse<TwitterApplicationList> createNewApplicationList(String accountId, TwitterApplicationList twitterApplicationList)
-            throws TwitterException;
-
     /**
      * @param q (optional) Search results for matching a specific IAB category.
      * @return all the Twitter IAB categories that can be targeted
