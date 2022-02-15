@@ -1,8 +1,5 @@
 package twitter4jads.internal.models4j;
 
-import twitter4jads.api.internal.TweetsResources;
-import twitter4jads.api.internal.UndocumentedResources;
-import twitter4jads.api.internal.UsersResources;
 import twitter4jads.auth.OAuthSupport;
 
 /**
@@ -11,8 +8,5 @@ import twitter4jads.auth.OAuthSupport;
  */
 public interface Twitter extends java.io.Serializable,
         OAuthSupport,
-        TwitterBase,
-        TweetsResources,
-        UsersResources,
-        UndocumentedResources {
+        TwitterBase {
 }

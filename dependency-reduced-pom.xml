@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.hevodata</groupId>
+  <groupId>io.hevo</groupId>
   <artifactId>twitter-ads4j</artifactId>
   <name>twitter-ads4j</name>
-  <version>${packageVersion}</version>
+  <version>2.0.0</version>
   <description>TwitterAds sdk</description>
   <url>https://github.com/hevoio/twitter-ads4j</url>
   <issueManagement>
@@ -118,6 +118,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
