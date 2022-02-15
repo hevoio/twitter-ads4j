@@ -1,7 +1,6 @@
 package twitter4jads.api;
 
 import twitter4jads.BaseAdsListResponseIterable;
-import twitter4jads.BaseAdsResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.Tweet;
 import twitter4jads.models.ads.TwitterTimelineType;

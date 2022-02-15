@@ -8,7 +8,6 @@ import twitter4jads.models.ads.sort.LineItemsSortByField;
 import twitter4jads.models.media.TwitterMediaCallToAction;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,78 +34,4 @@ public interface TwitterAdsLineItemApi {
     BaseAdsListResponseIterable<LineItem> getAllLineItems(String accountId, Optional<Collection<String>> campaignIds, Optional<Collection<String>> lineItemIds,
                                                           Optional<Collection<String>> fundingInstrumentIds, Optional<Integer> count, boolean withDeleted,
                                                           String cursor, Optional<LineItemsSortByField> sortByField, Optional<String> q) throws TwitterException;
-
-    /**
-     * @param accountId   The identifier for the leveraged account.
-     * @param lineItemId  A reference to the line item you are operating with in the request.
-     * @param withDeleted Include deleted results in your request. Defaults to false.
-     * @return Retrieve a specific line item associated with a campaign belonging to the current account.
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/line_items/%3Aline_item_id">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/line_items/%3Aline_item_id</a>
-     */
-    BaseAdsResponse<LineItem> getLineItemById(String accountId, String lineItemId, boolean withDeleted) throws TwitterException;
-
-    /**
-     * @param accountId                The identifier for the leveraged account.
-     * @param lineItemId               The line item identifier of the line item to update.
-     * @param bidType                  The BidType to use on this line item.
-     * @param automaticallySelectBid   Whether to use auto bidding on this line item.
-     * @param bidAmountLocalMicro      (optional) Specify a new bid to set on this line item.
-     * @param status                   Status to set
-     * @param includeSentiment         (optional) Update the include sentiment parameter of line item.
-     * @param chargeBy                 (optional) Update the charge by parameter of line item.
-     * @param bidUnit                  (optional) Update the bid unit parameter of line item.
-     * @param advertiserDomain         (optional) Update the advertiser domain of line item (for TAP campaigns).
-     * @param iabCategories            (optional) Update the IAB categories associated with the line item (for TAP campaigns).
-     * @param twitterAudienceExpansion (optional) Used to expand the reach of campaigns by targeting users similar to those already targeted.
-     * @return updated line item
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/put/accounts/%3Aaccount_id/line_items/%3Aline_item_id">https://dev.twitter.com/ads/reference/put/accounts/%3Aaccount_id/line_items/%3Aline_item_id</a>
-     */
-    BaseAdsResponse<LineItem> updateLineItem(String accountId, String lineItemId, BidType bidType, boolean automaticallySelectBid,
-                                             Optional<Long> bidAmountLocalMicro, EntityStatus status, Optional<Sentiments> includeSentiment,
-                                             Optional<Boolean> matchRelevantPopularQueries, Optional<String> chargeBy,
-                                             Optional<String> bidUnit, Optional<String> advertiserDomain, String optimization,
-                                             String[] iabCategories, String startTime, String endTime, String name,
-                                             Long targetCPA, Long budget, String trackingTags, String twitterAudienceExpansion) throws TwitterException;
-
-    /**
-     * @param accountId  The identifier for the leveraged account.
-     * @param lineItemId The line item identifier of the line item to delete.
-     * @return line item to be deleted with deleted field set to true
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/delete/accounts/%3Aaccount_id/line_items/%3Aline_item_id">https://dev.twitter.com/ads/reference/delete/accounts/%3Aaccount_id/line_items/%3Aline_item_id</a>
-     */
-    BaseAdsResponse<LineItem> deleteLineItem(String accountId, String lineItemId) throws TwitterException;
-
-    /**
-     * @param accountId  The identifier for the leveraged account.
-     * @param lineItemId Scope the response to just the desired line item
-     * @param userId     Id of the user of the account to be promoted
-     * @return created promoted account
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/promoted_accounts">https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/promoted_accounts</a>
-     */
-    BaseAdsResponse<PromotedAccount> createPromotedAccounts(String accountId, String lineItemId, String userId) throws TwitterException;
-
-
-
-
-    BaseAdsResponse<TwitterMediaCallToAction> deleteCallToAction(String accountId, String channelId) throws TwitterException;
-
-    BaseAdsResponse<LineItemAppResponse> publishApp(String accountId, String lineItemId, String appStoreIdentifier, TwitterOSType twitterOSType)
-            throws TwitterException;
-
-
-    BaseAdsResponse<LineItemAppResponse> getForLineItemAppId(String accountId, String lineItemAppId) throws TwitterException;
-
-    @Deprecated
-    BaseAdsListResponseIterable<LineItemAppResponse> getForLineItemAppIds(String accountId, String lineItemId, List<String> lineItemAppIds,
-                                                                          Integer count, String cursor, boolean withDeleted) throws TwitterException;
-
-    BaseAdsListResponseIterable<LineItemAppResponse> getForLineItemAppIds(String accountId, Collection<String> lineItemIds,
-                                                                          List<String> lineItemAppIds,
-                                                                          Integer count, String cursor, boolean withDeleted) throws TwitterException;
-
-    BaseAdsResponse<LineItemAppResponse> deleteLineItemApp(String accountId, String lineItemAppId) throws TwitterException;
 }

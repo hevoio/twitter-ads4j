@@ -16,7 +16,6 @@ import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.AdAccount;
 import twitter4jads.models.ads.AdAccountNativePermissions;
 import twitter4jads.models.ads.HttpVerb;
-import twitter4jads.models.ads.PromotableUser;
 import twitter4jads.models.ads.sort.AccountsSortByField;
 import twitter4jads.util.TwitterAdUtil;
 
@@ -94,19 +93,6 @@ public class TwitterAdsAccountApiImpl implements TwitterAdsAccountApi {
         }
 
         return permissionsFromChannel;
-    }
-
-    @Override
-    public BaseAdsListResponseIterable<PromotableUser> getPromotableUsers(String accountId, boolean withDeleted) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, "accountId");
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_WITH_DELETED, withDeleted));
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_PROMOTABLE_USERS;
-        final Type type = new TypeToken<BaseAdsListResponse<PromotableUser>>() {
-        }.getType();
-
-        return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
     }
 
     @Override
