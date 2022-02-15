@@ -5,7 +5,6 @@ import twitter4jads.BaseAdsResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.*;
 import twitter4jads.models.ads.sort.LineItemsSortByField;
-import twitter4jads.models.ads.sort.PromotedAccountsSortByField;
 import twitter4jads.models.media.TwitterMediaCallToAction;
 
 import java.util.Collection;
@@ -90,36 +89,7 @@ public interface TwitterAdsLineItemApi {
      */
     BaseAdsResponse<PromotedAccount> createPromotedAccounts(String accountId, String lineItemId, String userId) throws TwitterException;
 
-    /**
-     * @param accountId          The identifier for the leveraged account.
-     * @param promotedAccountIds (optional) Scope the response to the Collection of promoted account IDs. These identifiers refer to a associated Promoted Account with a line item.
-     * @param lineItemId         (optional) A reference to the line item you are operating with in the request. Omitting the lineItemIds will return all
-     *                           promoted tweets across all campaigns.
-     * @param withDeleted        Include deleted results in your request. Defaults to false.
-     * @param sortByField        Sorts by supported attribute in ascending or descending order.
-     * @return references to the Promoted Accounts associated with one or more line items
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/promoted_accounts">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/promoted_accounts</a>
-     */
-    @Deprecated
-    BaseAdsListResponseIterable<PromotedAccount> getPromotedAccounts(String accountId, Optional<Collection<String>> promotedAccountIds,
-                                                                     String lineItemId, boolean withDeleted,
-                                                                     PromotedAccountsSortByField sortByField) throws TwitterException;
 
-    /**
-     * @param accountId          The identifier for the leveraged account.
-     * @param promotedAccountIds (optional) Scope the response to the Collection of promoted account IDs. These identifiers refer to a associated Promoted Account with a line item.
-     * @param lineItemIds        (optional) A reference to line items you are operating with in the request. Omitting the lineItemIds will return all
-     *                           promoted tweets across all campaigns.
-     * @param withDeleted        Include deleted results in your request. Defaults to false.
-     * @param sortByField        Sorts by supported attribute in ascending or descending order.
-     * @return references to the Promoted Accounts associated with one or more line items
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/promoted_accounts">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/promoted_accounts</a>
-     */
-    BaseAdsListResponseIterable<PromotedAccount> getPromotedAccounts(String accountId, Optional<Collection<String>> promotedAccountIds,
-                                                                     Optional<Collection<String>> lineItemIds, boolean withDeleted,
-                                                                     PromotedAccountsSortByField sortByField) throws TwitterException;
 
 
     BaseAdsResponse<TwitterMediaCallToAction> deleteCallToAction(String accountId, String channelId) throws TwitterException;

@@ -10,7 +10,6 @@ import twitter4jads.internal.http.HttpParameter;
 import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.sort.LineItemsSortByField;
-import twitter4jads.models.ads.sort.PromotedAccountsSortByField;
 import twitter4jads.models.media.TwitterMediaCallToAction;
 import twitter4jads.util.TwitterAdUtil;
 
@@ -131,53 +130,6 @@ public class TwitterAdsLineItemApiImpl implements TwitterAdsLineItemApi {
             throw new TwitterException("Failed to parse promoted accounts.");
         }
     }
-    @Deprecated
-    @Override
-    public BaseAdsListResponseIterable<PromotedAccount> getPromotedAccounts(String accountId, Optional<Collection<String>> promotedAccountIds,
-                                                                            String lineItemId, boolean withDeleted,
-                                                                            PromotedAccountsSortByField sortByField) throws TwitterException {
-        final Set<String> lineItemIds = new HashSet<>();
-        if (TwitterAdUtil.isNotNullOrEmpty(lineItemId)) {
-            lineItemIds.add(lineItemId);
-        }
-
-        return getPromotedAccounts(accountId, promotedAccountIds, Optional.of(lineItemIds), withDeleted, sortByField);
-    }
-
-
-    @SuppressWarnings("Duplicates")
-    @Override
-    public BaseAdsListResponseIterable<PromotedAccount> getPromotedAccounts(String accountId, Optional<Collection<String>> promotedAccountIds,
-                                                                            Optional<Collection<String>> lineItemIds, boolean withDeleted,
-                                                                            PromotedAccountsSortByField sortByField) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, "accountId");
-        String promotedAccountsIdsAsString = null;
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_WITH_DELETED, withDeleted));
-        if (promotedAccountIds != null && promotedAccountIds.isPresent() && TwitterAdUtil.isNotEmpty(promotedAccountIds.get())) {
-            TwitterAdUtil.ensureMaxSize(promotedAccountIds.get(), MAX_REQUEST_PARAMETER_SIZE);
-            promotedAccountsIdsAsString = TwitterAdUtil.getCsv(promotedAccountIds.get());
-        }
-
-        if (lineItemIds != null && lineItemIds.isPresent() && TwitterAdUtil.isNotEmpty(lineItemIds.get())) {
-            TwitterAdUtil.ensureMaxSize(lineItemIds.get(), TwitterAdsConstants.MAX_LINE_ITEM_IDS_REQUEST_SIZE);
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_LINE_ITEM_IDS, TwitterAdUtil.getCsv(lineItemIds.get())));
-        }
-        if (TwitterAdUtil.isNotNullOrEmpty(promotedAccountsIdsAsString)) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_PROMOTED_ACCOUNTS_IDS, promotedAccountsIdsAsString));
-        }
-        if (sortByField != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_SORT_BY, sortByField.getField()));
-        }
-
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_PROMOTED_ACCOUNTS;
-        final Type type = new TypeToken<BaseAdsListResponse<PromotedAccount>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
-    }
-
 
     @Override
     public BaseAdsResponse<TwitterMediaCallToAction> deleteCallToAction(String accountId, String channelId) throws TwitterException {
