@@ -12,8 +12,6 @@ import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.sort.LineItemsSortByField;
 import twitter4jads.models.ads.sort.PromotedAccountsSortByField;
 import twitter4jads.models.media.TwitterMediaCallToAction;
-import twitter4jads.models.video.AssociateMediaCreativeResponse;
-import twitter4jads.models.video.TwitterCallToActionType;
 import twitter4jads.util.TwitterAdUtil;
 
 import java.io.IOException;
@@ -133,61 +131,6 @@ public class TwitterAdsLineItemApiImpl implements TwitterAdsLineItemApi {
             throw new TwitterException("Failed to parse promoted accounts.");
         }
     }
-
-    @Override
-    public BaseAdsResponse<TwitterMediaCallToAction> createCallToActionDetails(String accountId, String lineItemId,
-                                                                               TwitterCallToActionType twitterCallToActionType,
-                                                                               String callToActionUrl) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-        TwitterAdUtil.ensureNotNull(lineItemId, TwitterAdsConstants.LINE_ITEM_ID);
-        TwitterAdUtil.ensureNotNull(callToActionUrl, "Call To Action Url");
-        TwitterAdUtil.ensureNotNull(twitterCallToActionType, "Call To Action Type");
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_LINE_ITEM_ID, lineItemId));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_ACCOUNT_ID, accountId));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_CALL_TO_ACTION, twitterCallToActionType.name()));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_CALL_TO_ACTION_URL, callToActionUrl));
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PRE_ROLL_CALL_TO_ACTION;
-        final HttpResponse httpResponse = twitterAdsClient.postRequest(baseUrl, params.toArray(new HttpParameter[params.size()]));
-        try {
-            final Type type = new TypeToken<BaseAdsResponse<TwitterMediaCallToAction>>() {
-            }.getType();
-            return TwitterAdUtil.constructBaseAdsResponse(httpResponse, httpResponse.asString(), type);
-        } catch (IOException e) {
-            throw new TwitterException("Failed to parse call to action response.");
-        }
-    }
-
-    //landing url is the url of the media creative
-    @Override
-    public BaseAdsResponse<AssociateMediaCreativeResponse> associateMediaCreativeWithAccount(String accountId, String lineItemId,
-                                                                                             String accountMediaId, String landingUrl)
-            throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-        TwitterAdUtil.ensureNotNull(lineItemId, TwitterAdsConstants.LINE_ITEM_ID);
-        TwitterAdUtil.ensureNotNull(accountMediaId, "Account Media Id");
-        TwitterAdUtil.ensureNotNull(landingUrl, " Landing Url");
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_ACCOUNT_ID, accountId));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_LINE_ITEM_ID, lineItemId));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_ACCOUNT_MEDIA_ID, accountMediaId));
-        if (TwitterAdUtil.isNotNullOrEmpty(landingUrl)) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_LANDING_URL, landingUrl));
-        }
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_MEDIA_CREATIVES;
-        final HttpResponse httpResponse = twitterAdsClient.postRequest(baseUrl, params.toArray(new HttpParameter[params.size()]));
-        try {
-            final Type type = new TypeToken<BaseAdsResponse<AssociateMediaCreativeResponse>>() {
-            }.getType();
-            return TwitterAdUtil.constructBaseAdsResponse(httpResponse, httpResponse.asString(), type);
-        } catch (IOException e) {
-            throw new TwitterException("Failed to parse response for associate media to account", e);
-        }
-    }
-
     @Deprecated
     @Override
     public BaseAdsListResponseIterable<PromotedAccount> getPromotedAccounts(String accountId, Optional<Collection<String>> promotedAccountIds,
@@ -235,33 +178,6 @@ public class TwitterAdsLineItemApiImpl implements TwitterAdsLineItemApi {
         return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
     }
 
-
-    @Override
-    public BaseAdsResponse<TwitterMediaCallToAction> updateCallToAction(String accountId, String channelId, String callToActionUrl,
-                                                                        TwitterCallToActionType twitterCallToActionType) throws TwitterException {
-
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-        TwitterAdUtil.ensureNotNull(channelId, "Channel Id");
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_ID, channelId));
-        if (StringUtils.isNotBlank(callToActionUrl)) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_CALL_TO_ACTION_URL, callToActionUrl));
-        }
-        if (twitterCallToActionType != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_CALL_TO_ACTION, twitterCallToActionType.name()));
-        }
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PRE_ROLL_CALL_TO_ACTION + "/" + channelId;
-        final HttpResponse httpResponse = twitterAdsClient.putRequest(baseUrl, params.toArray(new HttpParameter[params.size()]));
-        try {
-            final Type type = new TypeToken<BaseAdsResponse<TwitterMediaCallToAction>>() {
-            }.getType();
-            return TwitterAdUtil.constructBaseAdsResponse(httpResponse, httpResponse.asString(), type);
-        } catch (IOException e) {
-            throw new TwitterException("Failed to parse call to action response.");
-        }
-    }
 
     @Override
     public BaseAdsResponse<TwitterMediaCallToAction> deleteCallToAction(String accountId, String channelId) throws TwitterException {

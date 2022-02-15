@@ -7,8 +7,6 @@ import twitter4jads.models.ads.*;
 import twitter4jads.models.ads.sort.LineItemsSortByField;
 import twitter4jads.models.ads.sort.PromotedAccountsSortByField;
 import twitter4jads.models.media.TwitterMediaCallToAction;
-import twitter4jads.models.video.AssociateMediaCreativeResponse;
-import twitter4jads.models.video.TwitterCallToActionType;
 
 import java.util.Collection;
 import java.util.List;
@@ -123,33 +121,6 @@ public interface TwitterAdsLineItemApi {
                                                                      Optional<Collection<String>> lineItemIds, boolean withDeleted,
                                                                      PromotedAccountsSortByField sortByField) throws TwitterException;
 
-    /**
-     * @param accountId               The identifier for the leveraged account.
-     * @param lineItemId              The line item identifier of the line item to create call to action details for.
-     * @param twitterCallToActionType The call to action type to be used with this pre-roll.
-     * @param callToActionUrl         The call to action URL to be used with this pre-roll.
-     * @return the response of creating call to action details for pre roll views
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/preroll_call_to_action">https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/preroll_call_to_action</a>
-     */
-    BaseAdsResponse<TwitterMediaCallToAction> createCallToActionDetails(String accountId, String lineItemId,
-                                                                        TwitterCallToActionType twitterCallToActionType,
-                                                                        String callToActionUrl) throws TwitterException;
-
-    /**
-     * @param accountId      The identifier for the leveraged account.
-     * @param lineItemId     The line item identifier of the line item to associate media with.
-     * @param accountMediaId The account media ID to associate.
-     * @param landingUrl     The url of the media creative.
-     * @return response of associating media creative with account
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/media_creatives">https://dev.twitter.com/ads/reference/post/accounts/%3Aaccount_id/media_creatives</a>
-     */
-    BaseAdsResponse<AssociateMediaCreativeResponse> associateMediaCreativeWithAccount(String accountId, String lineItemId, String accountMediaId,
-                                                                                      String landingUrl) throws TwitterException;
-
-    BaseAdsResponse<TwitterMediaCallToAction> updateCallToAction(String accountId, String channelId, String callToActionUrl,
-                                                                 TwitterCallToActionType twitterCallToActionType) throws TwitterException;
 
     BaseAdsResponse<TwitterMediaCallToAction> deleteCallToAction(String accountId, String channelId) throws TwitterException;
 

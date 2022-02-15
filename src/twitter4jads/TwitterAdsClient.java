@@ -12,7 +12,6 @@ import twitter4jads.internal.models4j.TwitterAPIMonitor;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.internal.models4j.TwitterImpl;
 import twitter4jads.internal.models4j.Version;
-import twitter4jads.models.TwitterTonUploadResponse;
 import twitter4jads.models.ads.HttpVerb;
 import twitter4jads.models.media.TwitterLibraryMedia;
 import twitter4jads.models.media.TwitterMediaLibraryStatus;
@@ -171,25 +170,6 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
 
     public HttpResponse putRequest(String url, HttpParameter[] params) throws TwitterException {
         return put(url, params);
-    }
-
-    public TwitterTonUploadResponse executeHttpRequestForTon(String baseUrl, HttpParameter[] params, HttpVerb httpVerb,
-                                                             Map<String, String> customHeaders) throws TwitterException {
-        HttpResponse httpResponse;
-        TwitterTonUploadResponse response = null;
-        switch (httpVerb) {
-            case PUT:
-                httpResponse = putWithCustomHeaders(baseUrl, params, customHeaders, true);
-                response = getResponseFromHeaders(httpResponse);
-
-                break;
-            case POST:
-                httpResponse = postWithCustomHeaders(baseUrl, params, customHeaders, true);
-                response = getResponseFromHeaders(httpResponse);
-                break;
-        }
-
-        return response;
     }
 
     public <T> T executeRequest(String baseUrl, HttpParameter[] params, Type typeToken, HttpVerb httpVerb) throws TwitterException {
@@ -411,23 +391,6 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
         }
     }
 
-    private TwitterTonUploadResponse getResponseFromHeaders(HttpResponse httpResponse) {
-        Integer minChunkSize = null;
-        Integer maxChunkSize = null;
-        String location = httpResponse.getResponseHeader("location");
-        Integer bytesSuccessfullyUploaded = getBytesUploadedFromHeader(httpResponse);
-        String minimumChunkSizeFromHeader = httpResponse.getResponseHeader("x-ton-min-chunk-size");
-        if (minimumChunkSizeFromHeader != null) {
-            minChunkSize = Integer.valueOf(minimumChunkSizeFromHeader);
-
-        }
-        String maximumChunkSizeFromHeader = httpResponse.getResponseHeader("x-ton-max-chunk-size");
-        if (maximumChunkSizeFromHeader != null) {
-            maxChunkSize = Integer.valueOf(maximumChunkSizeFromHeader);
-
-        }
-        return new TwitterTonUploadResponse(location, minChunkSize, maxChunkSize, bytesSuccessfullyUploaded, null);
-    }
 
     private Integer getBytesUploadedFromHeader(HttpResponse httpResponse) {
         String range;
