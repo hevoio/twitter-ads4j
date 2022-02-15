@@ -11,8 +11,6 @@ public interface TwitterAds extends java.io.Serializable {
 
     TwitterAdsCampaignApi getCampaignApi();
 
-    TwitterAdsCardsApi getCardsApi();
-
     TwitterAdsFundingInstrumentApi getFundingInstrumentApi();
 
     TwitterAdsLineItemApi getLineItemApi();
@@ -21,27 +19,13 @@ public interface TwitterAds extends java.io.Serializable {
 
     TwitterAdsStatApi getStatApi();
 
-    TwitterAdsAudienceApi getTailoredAudienceApi();
-
     TwitterAdsTargetingApi getTargetingApi();
-
-    TwitterAdsWebEventApi getWebEventApi();
 
     TwitterAdsAccountApi getAccountApi();
 
     TwitterAdsPromotedTweetApi getPromotedTweetApi();
 
-    TwitterAdsBiddingApi getBiddingApi();
-
     TwitterAdsClient getTwitterAdsClient();
-
-    TwitterCallToActionApi getCallToActionApi();
-
-    TwitterAdsPreviewApi getPreviewApi();
-
-    TwitterScheduledTweetsApi getScheduledTweetApi();
-
-    TwitterAdsMediaUploadApi getMediaUploadApi();
 
     TwitterAdsTweetsApi getTweetsApi();
 }
