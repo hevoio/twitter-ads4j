@@ -1,6 +1,5 @@
 package twitter4jads;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import twitter4jads.auth.Authorization;
@@ -13,9 +12,6 @@ import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.internal.models4j.TwitterImpl;
 import twitter4jads.internal.models4j.Version;
 import twitter4jads.models.ads.HttpVerb;
-import twitter4jads.models.media.TwitterLibraryMedia;
-import twitter4jads.models.media.TwitterMediaLibraryStatus;
-import twitter4jads.util.TwitterAdUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -23,11 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static twitter4jads.TwitterAdsConstants.PATH_MEDIA_LIBRARY;
-import static twitter4jads.TwitterAdsConstants.PREFIX_ACCOUNTS_URI;
-import static twitter4jads.TwitterAdsConstants.SLASH;
-import static twitter4jads.TwitterAdsConstants.WAIT_INTERVAL;
-import static twitter4jads.models.media.TwitterMediaLibraryStatus.TRANSCODE_FAILED;
 import static twitter4jads.util.TwitterAdUtil.constructBaseAdsResponse;
 
 /**
@@ -218,37 +209,6 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
     }
 
     //https://twittercommunity.com/t/details-for-media-library-media-status/117756
-    public TwitterLibraryMedia waitForMediaProcessing(String accountId, String mediaKey, long maxWaitTime) throws TwitterException {
-        Long totalWaitTime = 0L;
-        String url = getBaseAdsAPIUrl() + PREFIX_ACCOUNTS_URI + accountId + PATH_MEDIA_LIBRARY + SLASH + mediaKey;
-
-        Type type = new TypeToken<BaseAdsResponse<TwitterLibraryMedia>>() {
-        }.getType();
-        while (totalWaitTime < maxWaitTime) {
-            final BaseAdsResponse<TwitterLibraryMedia> response = executeHttpRequest(url, null, type, HttpVerb.GET);
-            final TwitterLibraryMedia media = response.getData();
-            TwitterMediaLibraryStatus status;
-            try {
-                status = TwitterMediaLibraryStatus.valueOf(media.getMediaStatus());
-            } catch (Exception eX) {
-                return null;
-            }
-
-            switch (status) {
-                case TRANSCODE_FAILED:
-                    throw new TwitterException("Media processing error. Status: " + TRANSCODE_FAILED.name());
-                case TRANSCODE_COMPLETED:
-                    return media;
-                case TRANSCODE_PENDING:
-                case TRANSCODE_IN_PROGRESS:
-                    TwitterAdUtil.reallySleep(WAIT_INTERVAL);
-                    totalWaitTime += WAIT_INTERVAL;
-                    break;
-            }
-        }
-
-        return null;
-    }
 
     public Configuration getConf() {
         return super.getConfiguration();

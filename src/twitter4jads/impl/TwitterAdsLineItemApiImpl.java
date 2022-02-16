@@ -4,16 +4,11 @@ import com.google.gson.reflect.TypeToken;
 import twitter4jads.*;
 import twitter4jads.api.TwitterAdsLineItemApi;
 import twitter4jads.models.ads.*;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;;
 import twitter4jads.internal.http.HttpParameter;
-import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.sort.LineItemsSortByField;
-import twitter4jads.models.media.TwitterMediaCallToAction;
 import twitter4jads.util.TwitterAdUtil;
-
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
