@@ -4,7 +4,6 @@ import twitter4jads.BaseAdsListResponseIterable;
 import twitter4jads.BaseAdsResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.AdAccount;
-import twitter4jads.models.ads.AdAccountNativePermissions;
 import twitter4jads.models.ads.sort.AccountsSortByField;
 
 import java.util.List;
@@ -42,5 +41,4 @@ public interface TwitterAdsAccountApi {
      * @return permissions of the currently authenticated user (access_token) as they relate to the specified ads account
      * @throws TwitterException
      */
-    BaseAdsResponse<AdAccountNativePermissions> getAdAccountNativePermissions(String accountId) throws TwitterException;
 }

@@ -14,7 +14,6 @@ import twitter4jads.internal.http.HttpParameter;
 import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.AdAccount;
-import twitter4jads.models.ads.AdAccountNativePermissions;
 import twitter4jads.models.ads.HttpVerb;
 import twitter4jads.models.ads.sort.AccountsSortByField;
 import twitter4jads.util.TwitterAdUtil;
@@ -95,11 +94,5 @@ public class TwitterAdsAccountApiImpl implements TwitterAdsAccountApi {
         return permissionsFromChannel;
     }
 
-    @Override
-    public BaseAdsResponse<AdAccountNativePermissions> getAdAccountNativePermissions(String accountId) throws TwitterException {
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.AUTHENTICATED_USER_ACCESS;
-        Type type = new TypeToken<BaseAdsResponse<AdAccountNativePermissions>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpRequest(baseUrl, null, type, HttpVerb.GET);
-    }
+
 }
