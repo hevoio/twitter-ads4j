@@ -25,7 +25,7 @@ public class TwitterEntity implements Serializable {
     @Override
     public String toString() {
         return "TwitterEntity{" +
-               "id='" + id + '\'' +
-               '}';
+                "id='" + id + '\'' +
+                '}';
     }
 }
