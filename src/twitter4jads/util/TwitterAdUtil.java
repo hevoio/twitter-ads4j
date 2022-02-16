@@ -1,15 +1,12 @@
 package twitter4jads.util;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import twitter4jads.BaseAdsListBatchPostResponse;
 import twitter4jads.BaseAdsListResponse;
 import twitter4jads.BaseAdsResponse;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.RateLimitStatus;
-import twitter4jads.models.ads.TrackingTag;
 import twitter4jads.models.ads.TwitterAdObjective;
 
 import java.io.IOException;
@@ -176,14 +173,6 @@ public final class TwitterAdUtil {
         return baseResponse;
     }
 
-    public static <T> BaseAdsListBatchPostResponse<T> constructBaseAdsListBatchPostResponse(HttpResponse httpResponse, String response, Type type) throws IOException {
-        Gson gson = new Gson();
-        BaseAdsListBatchPostResponse<T> baseResponse = gson.fromJson(response, type);
-        RateLimitStatus rateLimitStatus = TwitterAdHttpUtils.createFromResponseHeader(httpResponse);
-        baseResponse.setRateLimitStatus(rateLimitStatus);
-        return baseResponse;
-    }
-
     public static void reallySleep(long millis) {
         boolean threadInterrupted = false;
         final long nanos = TimeUnit.MILLISECONDS.toNanos(millis);
@@ -206,15 +195,6 @@ public final class TwitterAdUtil {
                 Thread.currentThread().interrupt();
             }
         }
-    }
-
-    public static String getTrackingTagString(List<TrackingTag> trackingTags) {
-        if (isNotEmpty(trackingTags)) {
-            TrackingTag trackingTag = trackingTags.get(0);
-            return trackingTag.getTrackingPartner() + "-" + trackingTag.getTrackingTag();
-        }
-
-        return null;
     }
 
 }
