@@ -11,8 +11,6 @@ import twitter4jads.internal.org.json.JSONObject;
 import java.util.Collections;
 import java.util.List;
 
-import static twitter4jads.internal.json.z_T4JInternalParseUtil.getInt;
-
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>
  * In case the Twitter server returned HTTP error code, you can get the HTTP status code using getStatusCode() method.

@@ -1,18 +1,8 @@
 package twitter4jads.internal.json;
 
-import twitter4jads.conf.Configuration;
+
 import twitter4jads.internal.http.HttpResponse;
-import twitter4jads.internal.org.json.JSONException;
-import twitter4jads.internal.org.json.JSONObject;
 import twitter4jads.internal.models4j.RateLimitStatus;
-import twitter4jads.internal.models4j.TwitterException;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import static twitter4jads.internal.json.z_T4JInternalParseUtil.getInt;
 
 /**
  * A data class representing Twitter REST API's rate limit status
@@ -27,36 +17,6 @@ import static twitter4jads.internal.json.z_T4JInternalParseUtil.getInt;
     private int limit;
     private int resetTimeInSeconds;
     private int secondsUntilReset;
-    static Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res, Configuration conf) throws TwitterException {
-        JSONObject json = res.asJSONObject();
-        Map<String, RateLimitStatus> map = createRateLimitStatuses(json);
-        if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(map, json);
-        }
-        return map;
-    }
-
-    static Map<String, RateLimitStatus> createRateLimitStatuses(JSONObject json) throws TwitterException {
-        Map<String, RateLimitStatus> map = new HashMap<String, RateLimitStatus>();
-        try {
-            JSONObject resources = json.getJSONObject("resources");
-            Iterator resourceKeys = resources.keys();
-            while (resourceKeys.hasNext()) {
-                JSONObject resource = resources.getJSONObject((String) resourceKeys.next());
-                Iterator endpointKeys = resource.keys();
-                while (endpointKeys.hasNext()) {
-                    String endpoint = (String) endpointKeys.next();
-                    JSONObject rateLimitStatusJSON = resource.getJSONObject(endpoint);
-                    RateLimitStatus rateLimitStatus = new RateLimitStatusJSONImpl(rateLimitStatusJSON);
-                    map.put(endpoint, rateLimitStatus);
-                }
-            }
-            return Collections.unmodifiableMap(map);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-    }
 
     private RateLimitStatusJSONImpl(int limit, int remaining, int resetTimeInSeconds) {
         this.limit = limit;
@@ -65,16 +25,6 @@ import static twitter4jads.internal.json.z_T4JInternalParseUtil.getInt;
         this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000L - System.currentTimeMillis()) / 1000);
     }
 
-    RateLimitStatusJSONImpl(JSONObject json) throws TwitterException {
-        init(json);
-    }
-
-    void init(JSONObject json) throws TwitterException {
-        this.limit = z_T4JInternalParseUtil.getInt("limit", json);
-        this.remaining = z_T4JInternalParseUtil.getInt("remaining", json);
-        this.resetTimeInSeconds = z_T4JInternalParseUtil.getInt("reset", json);
-        this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000L - System.currentTimeMillis()) / 1000);
-    }
 
     static RateLimitStatus createFromResponseHeader(HttpResponse res) {
         if (null == res) {
