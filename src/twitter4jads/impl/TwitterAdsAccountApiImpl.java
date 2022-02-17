@@ -1,17 +1,14 @@
 package twitter4jads.impl;
 
-import com.google.common.collect.Lists;
 import com.google.gson.reflect.TypeToken;
 import twitter4jads.*;
 import twitter4jads.api.TwitterAdsAccountApi;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import twitter4jads.BaseAdsListResponse;
 import twitter4jads.BaseAdsListResponseIterable;
 import twitter4jads.BaseAdsResponse;
 import twitter4jads.TwitterAdsClient;
 import twitter4jads.internal.http.HttpParameter;
-import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.AdAccount;
 import twitter4jads.models.ads.HttpVerb;
