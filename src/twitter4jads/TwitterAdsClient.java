@@ -1,7 +1,6 @@
 package twitter4jads;
 
 import com.google.gson.Gson;
-import org.apache.commons.lang3.StringUtils;
 import twitter4jads.auth.Authorization;
 import twitter4jads.auth.OAuthSupport;
 import twitter4jads.conf.Configuration;
@@ -42,26 +41,16 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
         requestHeaders.put("Accept-Encoding", "gzip");
     }
 
-    public static TwitterAdsClient getInstance(Configuration conf, Authorization auth) {
-        return new TwitterAdsClient(conf, auth);
-    }
-
     public TwitterAdsClient(Configuration conf, Authorization auth) {
         super(conf, auth);
     }
 
-    private String getImplicitParamsStr() {
-        return StringUtils.EMPTY;
-    }
 
 
     public String getBaseAdsAPIUrl() {
         return ADS_API_URL;//conf.getAdsAPIURL();
     }
 
-    public String getMediaUploadBaseUrl() {
-        return conf.getMediaUploadBaseUrl();
-    }
 
     public <T> BaseAdsListResponseIterable<T> executeHttpListRequest(String baseUrl, List<HttpParameter> params, Type type) throws TwitterException {
         return executeHttpListRequest(baseUrl, params, type, false);
@@ -106,15 +95,6 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
                     throw new TwitterException("Failed to parse response.", e);
                 }
                 break;
-            case PUT:
-                try {
-                    httpResponse = put(baseUrl, params);
-                    stringResponse = httpResponse.asString();
-                    response = constructBaseAdsResponse(httpResponse, stringResponse, type);
-                } catch (IOException e) {
-                    throw new TwitterException("Failed to parse response.", e);
-                }
-                break;
             case POST:
                 //noinspection Duplicates
                 try {
@@ -125,100 +105,17 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
                     throw new TwitterException("Failed to parse response.", e);
                 }
                 break;
-            case DELETE:
-                try {
-                    httpResponse = delete(baseUrl, params);
-                    stringResponse = httpResponse.asString();
-                    response = constructBaseAdsResponse(httpResponse, stringResponse, type);
-                } catch (IOException e) {
-                    throw new TwitterException("Failed to parse response.", e);
-                }
-                break;
         }
 
         return response;
-    }
-
-    public HttpResponse postRequest(String url, String requestBody) throws TwitterException {
-        return super.post(url, requestBody);
     }
 
     public HttpResponse postRequest(String url, HttpParameter[] params) throws TwitterException {
         return post(url, params);
     }
-
-    public HttpResponse getRequest(String url, HttpParameter[] params) throws TwitterException {
-        return get(url, params);
-    }
-
-    public HttpResponse getRequest(String url) throws TwitterException {
-        return get(url);
-    }
-
-    public HttpResponse getWithoutMergeOfParams(String url, HttpParameter[] params) throws TwitterException {
-        return getWithoutMergingImplicitParams(url, params);
-    }
-
-    public HttpResponse putRequest(String url, HttpParameter[] params) throws TwitterException {
-        return put(url, params);
-    }
-
-    public <T> T executeRequest(String baseUrl, HttpParameter[] params, Type typeToken, HttpVerb httpVerb) throws TwitterException {
-        HttpResponse httpResponse;
-        String stringResponse;
-        T response = null;
-        switch (httpVerb) {
-            case GET:
-                try {
-                    httpResponse = getRequest(baseUrl, params);
-                    stringResponse = httpResponse.asString();
-                    response = constructHTTPRequestResponse(stringResponse, typeToken);
-                } catch (IOException e) {
-                    throw new TwitterException("Failed to parse response.", e);
-                }
-                break;
-            case PUT:
-                try {
-                    httpResponse = put(baseUrl, params);
-                    stringResponse = httpResponse.asString();
-                    response = constructHTTPRequestResponse(stringResponse, typeToken);
-                } catch (IOException e) {
-                    throw new TwitterException("Failed to parse response.", e);
-                }
-                break;
-            case POST:
-                try {
-                    httpResponse = postRequest(baseUrl, params);
-                    stringResponse = httpResponse.asString();
-                    response = constructHTTPRequestResponse(stringResponse, typeToken);
-                } catch (IOException e) {
-                    throw new TwitterException("Failed to parse response.", e);
-                }
-                break;
-            case DELETE:
-                try {
-                    httpResponse = delete(baseUrl, params);
-                    stringResponse = httpResponse.asString();
-                    response = constructHTTPRequestResponse(stringResponse, typeToken);
-                } catch (IOException e) {
-                    throw new TwitterException("Failed to parse response.", e);
-                }
-                break;
-        }
-        return response;
-    }
-
     //https://twittercommunity.com/t/details-for-media-library-media-status/117756
 
-    public Configuration getConf() {
-        return super.getConfiguration();
-    }
-
     // ------------------------------------------------------------------- PRIVATE METHODS -------------------------------------------------
-
-    private <T> T constructHTTPRequestResponse(String response, Type typeToken) throws IOException {
-        return GSON_INSTANCE.fromJson(response, typeToken);
-    }
 
     public HttpResponse get(String url) throws TwitterException {
         ensureAuthorizationEnabled();
@@ -277,92 +174,6 @@ public class TwitterAdsClient extends TwitterImpl implements OAuthSupport {
 
     private boolean isOk(HttpResponse response) {
         return response != null && response.getStatusCode() < 300;
-    }
-
-    protected HttpResponse put(String url, HttpParameter[] params) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (!conf.isMBeanEnabled()) {
-            return http.put(url, params, auth);
-        } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.put(url, params, auth);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
-        }
-    }
-
-    protected HttpResponse delete(String url) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (!conf.isMBeanEnabled()) {
-            return http.delete(url, null, auth);
-        } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.delete(url, null, auth);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
-        }
-    }
-
-    protected HttpResponse delete(String url, HttpParameter[] params) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (!conf.isMBeanEnabled()) {
-            return http.delete(url, params, auth);
-        } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.delete(url, params, auth);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
-        }
-    }
-
-    protected HttpResponse getWithoutMergingImplicitParams(String url, HttpParameter[] params) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (!conf.isMBeanEnabled()) {
-            return http.get(url, params, auth);
-        } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.get(url, params, auth);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
-        }
-    }
-
-
-    private Integer getBytesUploadedFromHeader(HttpResponse httpResponse) {
-        String range;
-        String rangeFromHeader = httpResponse.getResponseHeader("range");
-        if (rangeFromHeader != null) {
-            int i = rangeFromHeader.indexOf("-");
-            if (i > 0) {
-                range = rangeFromHeader.substring(i + 1, rangeFromHeader.length());
-                return Integer.valueOf(range);
-            }
-        }
-        return null;
     }
 }
 
