@@ -1,24 +1,15 @@
 package twitter4jads.internal.models4j;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import twitter4jads.auth.*;
 import twitter4jads.internal.http.*;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import twitter4jads.conf.Configuration;
 import twitter4jads.internal.json.z_T4JInternalFactory;
 import twitter4jads.internal.json.z_T4JInternalJSONImplFactory;
-import twitter4jads.models.ads.HttpVerb;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+
 
 import static twitter4jads.internal.http.HttpResponseCode.ENHANCE_YOUR_CLAIM;
 import static twitter4jads.internal.http.HttpResponseCode.SERVICE_UNAVAILABLE;
@@ -72,60 +63,6 @@ abstract class TwitterBaseImpl implements TwitterBase, Serializable, OAuthSuppor
 
     protected void setFactory() {
         factory = new z_T4JInternalJSONImplFactory(conf);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getScreenName() throws TwitterException, IllegalStateException {
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException("Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (null == screenName) {
-            if (auth instanceof BasicAuthorization) {
-                screenName = ((BasicAuthorization) auth).getUserId();
-                if (-1 != screenName.indexOf("@")) {
-                    screenName = null;
-                }
-            }
-            if (null == screenName) {
-                // retrieve the screen name if this instance is authenticated with OAuth or email address
-                fillInIDAndScreenName();
-            }
-        }
-        return screenName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long getId() throws TwitterException, IllegalStateException {
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException("Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (0 == id) {
-            fillInIDAndScreenName();
-        }
-        // retrieve the screen name if this instance is authenticated with OAuth or email address
-        return id;
-    }
-
-    protected User fillInIDAndScreenName() throws TwitterException {
-        ensureAuthorizationEnabled();
-        User user = factory.createUser(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", auth));
-        this.screenName = user.getScreenName();
-        this.id = user.getId();
-        return user;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addRateLimitStatusListener(RateLimitStatusListener listener) {
-        rateLimitStatusListeners.add(listener);
     }
 
     @Override
