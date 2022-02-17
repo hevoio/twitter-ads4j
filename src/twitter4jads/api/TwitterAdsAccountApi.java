@@ -27,18 +27,4 @@ public interface TwitterAdsAccountApi {
      * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id</a>
      */
     BaseAdsResponse<AdAccount> getAdAccountById(String accountId, Boolean withDeleted) throws TwitterException;
-
-    /**
-     * @param accountId The identifier for the leveraged account.
-     * @return account features associated with the given account.
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/features">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/features</a>
-     */
-    List<String> getAccountPermissions(String accountId) throws TwitterException;
-
-    /**
-     * @param accountId The identifier for the leveraged account.
-     * @return permissions of the currently authenticated user (access_token) as they relate to the specified ads account
-     * @throws TwitterException
-     */
 }

@@ -70,29 +70,4 @@ public class TwitterAdsAccountApiImpl implements TwitterAdsAccountApi {
 
         return twitterAdsClient.executeHttpRequest(baseUrl, param, type, HttpVerb.GET);
     }
-
-    @Override
-    public List<String> getAccountPermissions(String accountId) throws TwitterException {
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_FEATURES;
-        final HttpResponse httpResponse = twitterAdsClient.getWithoutMergeOfParams(baseUrl, null);
-        final List<String> permissionsFromChannel = Lists.newArrayList();
-        try {
-            Type type = new TypeToken<BaseAdsListResponse<String>>() {
-            }.getType();
-
-            final BaseAdsListResponse<String> permissions = TwitterAdUtil.constructBaseAdsListResponse(httpResponse, httpResponse.asString(), type);
-            if (permissions == null || CollectionUtils.isEmpty(permissions.getData())) {
-                throw new TwitterException("Empty response returned for Account Permissions");
-            }
-
-            final List<String> data = permissions.getData();
-            permissionsFromChannel.addAll(data);
-        } catch (Exception e) {
-            throw new TwitterException("Exception occurred while getting the Account Permissions", e);
-        }
-
-        return permissionsFromChannel;
-    }
-
-
 }
