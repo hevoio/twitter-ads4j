@@ -36,7 +36,7 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     @Override
     public String toString() {
         return "JSONImplFactory{" +
-               "conf=" + conf +
-               '}';
+                "conf=" + conf +
+                '}';
     }
 }
