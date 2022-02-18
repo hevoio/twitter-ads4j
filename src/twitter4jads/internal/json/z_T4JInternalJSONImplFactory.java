@@ -9,7 +9,7 @@ import twitter4jads.internal.models4j.*;
  *
  * @since Twitter4J 2.2.4
  */
-public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
+public class z_T4JInternalJSONImplFactory {
     private static final long serialVersionUID = 5217622295050444866L;
     private Configuration conf;
 

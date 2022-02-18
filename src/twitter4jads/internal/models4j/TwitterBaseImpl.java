@@ -3,7 +3,7 @@ package twitter4jads.internal.models4j;
 import twitter4jads.auth.*;
 import twitter4jads.internal.http.*;
 import twitter4jads.conf.Configuration;
-import twitter4jads.internal.json.z_T4JInternalFactory;
+
 import twitter4jads.internal.json.z_T4JInternalJSONImplFactory;
 
 import java.io.*;
@@ -26,8 +26,6 @@ abstract class TwitterBaseImpl implements TwitterBase, Serializable, OAuthSuppor
 
     protected transient HttpClientWrapper http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
-
-    protected z_T4JInternalFactory factory;
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
@@ -58,12 +56,9 @@ abstract class TwitterBaseImpl implements TwitterBase, Serializable, OAuthSuppor
         }
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
-        setFactory();
     }
 
-    protected void setFactory() {
-        factory = new z_T4JInternalJSONImplFactory(conf);
-    }
+
 
     @Override
     public void httpResponseReceived(HttpResponseEvent event) {
