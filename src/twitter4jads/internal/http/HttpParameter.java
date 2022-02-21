@@ -173,37 +173,6 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         return containsFile;
     }
 
-    /*package*/
-    static boolean containsFile(List<HttpParameter> params) {
-        boolean containsFile = false;
-        for (HttpParameter param : params) {
-            if (param.isFile()) {
-                containsFile = true;
-                break;
-            }
-        }
-        return containsFile;
-    }
-
-    public static HttpParameter[] getParameterArray(String name, String value) {
-        return new HttpParameter[]{new HttpParameter(name, value)};
-    }
-
-    public static HttpParameter[] getParameterArray(String name, int value) {
-        return getParameterArray(name, String.valueOf(value));
-    }
-
-    public static HttpParameter[] getParameterArray(String name1, String value1
-            , String name2, String value2) {
-        return new HttpParameter[]{new HttpParameter(name1, value1)
-                , new HttpParameter(name2, value2)};
-    }
-
-    public static HttpParameter[] getParameterArray(String name1, int value1
-            , String name2, int value2) {
-        return getParameterArray(name1, String.valueOf(value1), name2, String.valueOf(value2));
-    }
-
     @Override
     public int hashCode() {
         int result = name.hashCode();
