@@ -11,10 +11,6 @@ final class ExceptionDiagnosis implements java.io.Serializable {
     Throwable th;
     private static final long serialVersionUID = 453958937114285988L;
 
-    ExceptionDiagnosis(Throwable th) {
-        this(th, new String[]{});
-    }
-
     ExceptionDiagnosis(Throwable th, String[] inclusionFilter) {
         this.th = th;
 
@@ -39,17 +35,8 @@ final class ExceptionDiagnosis implements java.io.Serializable {
 
     }
 
-
-    int getStackLineHash() {
-        return stackLineHash;
-    }
-
     String getStackLineHashAsHex() {
         return toHexString(stackLineHash);
-    }
-
-    int getLineNumberHash() {
-        return lineNumberHash;
     }
 
     String getLineNumberHashAsHex() {

@@ -23,10 +23,6 @@ public class TwitterAdsTweetsApiImpl implements TwitterAdsTweetsApi {
 
     private static final Integer MAX_TWEET_IDS_REQUEST_SIZE = 200;
     private static final Integer NUMBER_OF_RECORDS_PER_REQUEST = 1000;
-    private static final Integer DEFAULT_NUMBER_OF_RECORDS_PER_REQUEST = 200;
-    private static final String CARD_URI_PREFIX = "card://";
-    private static final Integer VIDEO_DESCRIPTION_MAX_LENGTH = 200;
-    private static final Integer VIDEO_TITLE_MAX_LENGTH = 70;
     private TwitterAdsClient twitterAdsClient;
 
     public TwitterAdsTweetsApiImpl(TwitterAdsClient twitterAdsClient) {

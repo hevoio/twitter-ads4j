@@ -1,7 +1,5 @@
 package twitter4jads.impl;
 
-import com.google.common.collect.Sets;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import twitter4jads.*;
 import twitter4jads.api.TwitterAdsTargetingApi;
@@ -12,7 +10,6 @@ import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.util.TwitterAdUtil;
 import java.lang.reflect.Type;
 import java.util.*;
-import static twitter4jads.models.ads.TargetingType.*;
 
 /**
  *
@@ -20,13 +17,6 @@ import static twitter4jads.models.ads.TargetingType.*;
  * Time: 7:16 PM
  */
 public class TwitterAdsTargetingApiImpl implements TwitterAdsTargetingApi {
-
-    private static final Integer MAX_REQUEST_PARAMETER_SIZE = 50;
-    private static final Set<TargetingType> TARGETING_TYPES_WITH_MODIFIER_PREFIX_OR_SUFFIX =
-            Sets.newHashSet(EXCLUDE_APP_LIST, NEGATIVE_BEHAVIOR, NEGATIVE_EXACT_KEYWORD, NEGATIVE_PHRASE_KEYWORD, NEGATIVE_UNORDERED_KEYWORD,
-                    NETWORK_ACTIVATION_DURATION_GTE, NETWORK_ACTIVATION_DURATION_LT);
-
-    private static final Gson GSON = new Gson();
     private final TwitterAdsClient twitterAdsClient;
 
     public TwitterAdsTargetingApiImpl(TwitterAdsClient twitterAdsClient) {

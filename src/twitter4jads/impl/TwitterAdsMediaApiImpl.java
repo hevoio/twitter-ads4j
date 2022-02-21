@@ -19,9 +19,6 @@ import java.util.List;
  * Date: 16/05/16 12:25 PM.
  */
 public class TwitterAdsMediaApiImpl implements TwitterAdsMediaApi {
-
-
-    public static final int TWITTER_MAX_LIBRARY_GET_COUNT = 50;
     private final TwitterAdsClient twitterAdsClient;
 
     public TwitterAdsMediaApiImpl(TwitterAdsClient twitterAdsClient) {

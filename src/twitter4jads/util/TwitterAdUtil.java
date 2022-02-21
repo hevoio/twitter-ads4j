@@ -28,14 +28,6 @@ import static twitter4jads.models.ads.TwitterAdObjective.WEBSITE_CONVERSIONS;
 public final class TwitterAdUtil {
 
     public static final String UTC_TMZ = "UTC";
-    public static final String FORMAT_YYYYMMDD_HHMM = "yyyyMMdd_HHmm";
-
-    public static final ThreadLocal<Calendar> UTC_CALENDAR = new ThreadLocal<Calendar>() {
-        @Override
-        protected Calendar initialValue() {
-            return Calendar.getInstance(TimeZone.getTimeZone(UTC_TMZ));
-        }
-    };
 
     public static <T> String getCsv(Collection<T> collection) {
         String result = "";
