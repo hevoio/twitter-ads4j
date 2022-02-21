@@ -4,7 +4,7 @@ package twitter4jads.internal.http;
  * A utility class encodes byte array into String using Base64 encoding scheme.
  *
  *
- * @see HttpClient
+
  */
 public final class BASE64Encoder {
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);
