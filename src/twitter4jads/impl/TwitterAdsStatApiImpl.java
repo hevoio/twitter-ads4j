@@ -269,4 +269,14 @@ public class TwitterAdsStatApiImpl implements TwitterAdsStatApi {
         return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
     }
 
+    @Override
+    public BaseAdsListResponseIterable<JobDetails> getCurrJobsMetrics(String accountId) throws TwitterException {
+        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
+        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_STATS_JOB_ACCOUNTS_URI + accountId;
+
+        Type type = new TypeToken<BaseAdsListResponse<JobDetails>>() {
+        }.getType();
+
+        return twitterAdsClient.executeHttpListRequest(baseUrl , null,type);
+    }
 }

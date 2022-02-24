@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import twitter4jads.internal.http.HttpParameter;
 import twitter4jads.internal.http.HttpResponse;
+import twitter4jads.internal.models4j.JobLimitStatus;
 import twitter4jads.internal.models4j.RateLimitStatus;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.TwitterRuntimeException;
@@ -51,6 +52,10 @@ public class BaseAdsListResponseIterable<T> implements Iterable<BaseAdsListRespo
             rateLimitStatus = TwitterAdHttpUtils.createFromResponseHeader(response);
         }
         data.setRateLimitStatus(rateLimitStatus);
+
+        JobLimitStatus jobLimitStatus;
+        jobLimitStatus = TwitterAdHttpUtils.getJobLimitDataFromResponseHeader(response);
+        data.setJobLimitStatus(jobLimitStatus);
         if (TwitterAdUtil.isNotEmpty(data.getData()) && data.getNextCursor() != null) {
             nextCursor = data.getNextCursor();
         }

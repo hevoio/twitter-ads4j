@@ -91,4 +91,7 @@ public interface TwitterAdsStatApi {
     BaseAdsResponse<JobDetails> deleteJob(String accountId, String jobId) throws TwitterException;
 
     BaseAdsListResponseIterable<TwitterActiveEntity> fetchActiveEntities(String accountId, TwitterEntityType twitterEntity, Collection<String> fundingInstrumentIds, Collection<String> campaignIds, Collection<String> lineItemIds, String startTime, String endTime) throws TwitterException;
+
+    BaseAdsListResponseIterable<JobDetails> getCurrJobsMetrics(String accountId) throws TwitterException;
+
 }
