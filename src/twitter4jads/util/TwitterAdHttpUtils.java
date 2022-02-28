@@ -70,12 +70,12 @@ public class TwitterAdHttpUtils {
         int limit = 0;
         int remaining = 0;
 
-        String strLimit = res.getResponseHeader("x-concurrent-job-limit");
+        String strLimit = res.getResponseHeader("X-Concurrent-Job-Limit");
         if(strLimit !=null) {
             limit = Integer.parseInt(strLimit);
         }
 
-        String strRemaining = res.getResponseHeader("x-concurrent-job-limit-remaining");
+        String strRemaining = res.getResponseHeader("X-Concurrent-Job-Limit-Remaining");
         if(strRemaining != null) {
             remaining = Integer.parseInt(strRemaining);
         }
