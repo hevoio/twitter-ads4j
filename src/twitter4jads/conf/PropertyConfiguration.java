@@ -76,22 +76,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements Se
     public static final String CLIENT_URL = "clientURL";
     private static final long serialVersionUID = 6458764415636588373L;
 
-    public PropertyConfiguration(InputStream is) {
-        super();
-        Properties props = new Properties();
-        loadProperties(props, is);
-        setFieldsWithTreePath(props, "/");
-    }
-
-    public PropertyConfiguration(Properties props) {
-        this(props, "/");
-    }
-
-    public PropertyConfiguration(Properties props, String treePath) {
-        super();
-        setFieldsWithTreePath(props, treePath);
-    }
-
     PropertyConfiguration(String treePath) {
         super();
         Properties props;

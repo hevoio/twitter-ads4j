@@ -1,7 +1,6 @@
 package twitter4jads.api;
 
 import twitter4jads.BaseAdsListResponseIterable;
-import twitter4jads.BaseAdsResponse;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.FundingInstrument;
 import twitter4jads.models.ads.sort.FundingInstrumentSortByField;
@@ -28,14 +27,4 @@ public interface TwitterAdsFundingInstrumentApi {
     BaseAdsListResponseIterable<FundingInstrument> getAllFundingInstruments(String accountId, boolean withDeleted, Optional<Collection<String>> fundingInstrumentIds,
                                                                             Optional<FundingInstrumentSortByField> sortByField) throws TwitterException;
 
-    /**
-     * @param accountId           The identifier for the leveraged account.
-     * @param fundingInstrumentId The identifier for a funding instrument associated with the current account.
-     * @param withDeleted         Include deleted results in your request. Defaults to false.
-     * @return Retrieve a specific funding instrument associated with the account.
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/funding_instruments/%3Aid">https://dev.twitter.com/ads/reference/get/accounts/%3Aaccount_id/funding_instruments/%3Aid</a>
-     */
-    BaseAdsResponse<FundingInstrument> getFundingInstrumentById(String accountId, String fundingInstrumentId, boolean withDeleted)
-            throws TwitterException;
 }

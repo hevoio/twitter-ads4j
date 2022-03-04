@@ -3,19 +3,7 @@ package twitter4jads.internal.json;
 import twitter4jads.internal.http.HttpResponse;
 import twitter4jads.internal.org.json.JSONException;
 import twitter4jads.internal.org.json.JSONObject;
-import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.internal.models4j.TwitterResponse;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A tiny parse utility class.
@@ -28,10 +16,6 @@ public final class z_T4JInternalParseUtil {
         throw new AssertionError();
     }
 
-    static String getUnescapedString(String str, JSONObject json) {
-        return HTMLEntity.unescape(getRawString(str, json));
-    }
-
     public static String getRawString(String name, JSONObject json) {
         try {
             if (json.isNull(name)) {
@@ -41,74 +25,6 @@ public final class z_T4JInternalParseUtil {
             }
         } catch (JSONException jsone) {
             return null;
-        }
-    }
-
-    static String getURLDecodedString(String name, JSONObject json) {
-        String returnValue = getRawString(name, json);
-        if (returnValue != null) {
-            try {
-                returnValue = URLDecoder.decode(returnValue, "UTF-8");
-            } catch (UnsupportedEncodingException ignore) {
-            }
-        }
-        return returnValue;
-    }
-
-    public static Date parseTrendsDate(String asOfStr) throws TwitterException {
-        Date parsed;
-        switch (asOfStr.length()) {
-            case 10:
-                parsed = new Date(Long.parseLong(asOfStr) * 1000);
-                break;
-            case 20:
-                parsed = getDate(asOfStr, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-                break;
-            default:
-                parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
-        }
-        return parsed;
-    }
-
-
-    public static Date getDate(String name, JSONObject json) throws TwitterException {
-        return getDate(name, json, "EEE MMM d HH:mm:ss z yyyy");
-    }
-
-    public static Date getDate(String name, JSONObject json, String format) throws TwitterException {
-        String dateStr = getUnescapedString(name, json);
-        if ("null".equals(dateStr) || null == dateStr) {
-            return null;
-        } else {
-            return getDate(dateStr, format);
-        }
-    }
-
-    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<String,
-            LinkedBlockingQueue<SimpleDateFormat>>();
-
-    public static Date getDate(String dateString, String format) throws TwitterException {
-        LinkedBlockingQueue<SimpleDateFormat> simpleDateFormats = formatMapQueue.get(format);
-        if(simpleDateFormats == null){
-            simpleDateFormats = new LinkedBlockingQueue<SimpleDateFormat>();
-            formatMapQueue.put(format, simpleDateFormats);
-        }
-        SimpleDateFormat sdf = simpleDateFormats.poll();
-        if (null == sdf) {
-            sdf = new SimpleDateFormat(format, Locale.US);
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        }
-        try {
-            return sdf.parse(dateString);
-        } catch (ParseException pe) {
-            throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
-        }finally {
-            try {
-                simpleDateFormats.put(sdf);
-            } catch (InterruptedException ignore) {
-                // the size of LinkedBlockingQueue is Integer.MAX by default.
-                // there is no need to concern about this situation
-            }
         }
     }
 
@@ -128,49 +44,6 @@ public final class z_T4JInternalParseUtil {
             }
         }
     }
-
-    public static long getLong(String name, JSONObject json) {
-        return getLong(getRawString(name, json));
-    }
-
-    public static long getLong(String str) {
-        if (null == str || "".equals(str) || "null".equals(str)) {
-            return -1;
-        } else {
-            // some count over 100 will be expressed as "100+"
-            if (str.endsWith("+")) {
-                str = str.substring(0, str.length() - 1);
-                return Long.valueOf(str) + 1;
-            }
-            return Long.valueOf(str);
-        }
-    }
-
-    public static double getDouble(String name, JSONObject json) {
-        String str2 = getRawString(name, json);
-        if (null == str2 || "".equals(str2) || "null".equals(str2)) {
-            return -1;
-        } else {
-            return Double.valueOf(str2);
-        }
-    }
-
-    public static boolean getBoolean(String name, JSONObject json) {
-        String str = getRawString(name, json);
-        if (null == str || "null".equals(str)) {
-            return false;
-        }
-        return Boolean.valueOf(str);
-    }
-
-    public static Boolean getBooleanObject(String name, JSONObject json) {
-        String str = getRawString(name, json);
-        if (null == str || "null".equals(str)) {
-            return null;
-        }
-        return Boolean.valueOf(str);
-    }
-
 
     public static int toAccessLevel(HttpResponse res) {
         if (null == res) {

@@ -4,9 +4,6 @@ package twitter4jads.internal.models4j;
  * Super interface of Twitter Response data interfaces which indicates that rate limit status is avaialble.
  *
  *
- * @see twitter4jads.DirectMessage
- * @see twitter4jads.Status
- * @see twitter4jads.User
  */
 public interface TwitterResponse extends java.io.Serializable {
     /**

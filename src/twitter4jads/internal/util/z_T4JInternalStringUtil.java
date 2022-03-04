@@ -44,48 +44,4 @@ public class z_T4JInternalStringUtil {
 
         return returnValue;
     }
-
-    public static String join(int[] follows) {
-        StringBuilder buf = new StringBuilder(11 * follows.length);
-        for (int follow : follows) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(follow);
-        }
-        return buf.toString();
-    }
-
-    public static String join(long[] follows) {
-        StringBuilder buf = new StringBuilder(11 * follows.length);
-        for (long follow : follows) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(follow);
-        }
-        return buf.toString();
-    }
-
-    public static String join(String[] track) {
-        StringBuilder buf = new StringBuilder(11 * track.length);
-        for (String str : track) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(str);
-        }
-        return buf.toString();
-    }
-
-    public static String join(List<String> strs) {
-        StringBuilder buf = new StringBuilder(11 * strs.size());
-        for (String str : strs) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(str);
-        }
-        return buf.toString();
-    }
 }

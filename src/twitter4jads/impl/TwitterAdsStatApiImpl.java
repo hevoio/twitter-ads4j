@@ -40,67 +40,6 @@ public class TwitterAdsStatApiImpl implements TwitterAdsStatApi {
         this.twitterAdsClient = twitterAdsClient;
     }
 
-    public BaseAdsListResponseIterable<TwitterEntityStatistics> fetchStatsSync(String accountId, TwitterEntityType twitterEntity,
-                                                                               Collection<String> entityIds, long startTime, long endTime,
-                                                                               boolean withDeleted, Granularity granularity, Placement placement)
-            throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-        TwitterAdUtil.ensureNotNull(startTime, "startTime");
-        TwitterAdUtil.ensureNotNull(entityIds, "entityIds");
-        TwitterAdUtil.ensureNotNull(placement, "placement");
-
-        final String startTimeAsString = TwitterAdUtil.convertTimeToZuluFormatAndToUTC(startTime);
-        final String endTimeAsString = TwitterAdUtil.convertTimeToZuluFormatAndToUTC(endTime);
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_STATS_ACCOUNTS_URI + accountId;
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.GRANULARITY, granularity.toString()));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_START_TIME, startTimeAsString));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_ENTITY_TYPE, twitterEntity.name()));
-
-        if (TwitterAdUtil.isNotNullOrEmpty(endTimeAsString)) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_END_TIME, endTimeAsString));
-        }
-
-        String metrics = StringUtils.join(getMetrics(twitterEntity, null), ",");
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_METRICS_GROUPS, metrics));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_WITH_DELETED, withDeleted));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_ENTITY_IDS, TwitterAdUtil.getCsv(entityIds)));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAMS_PLACEMENT, placement.name()));
-
-        final Type type = new TypeToken<BaseAdsListResponse<TwitterEntityStatistics>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
-    }
-
-    @Override
-    public BaseAdsListResponseIterable<TwitterAuctionInsights> fetchAuctionInsights(String accountId, Collection<String> lineItemIds, long startTime,
-                                                                                    long endTime, Granularity granularity, Placement placement)
-            throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-        TwitterAdUtil.ensureNotNull(startTime, "startTime");
-        TwitterAdUtil.ensureNotNull(lineItemIds, "lineItemIds");
-        TwitterAdUtil.ensureNotNull(placement, "placement");
-
-        final String startTimeAsString = TwitterAdUtil.convertTimeToZuluFormatAndToUTC(startTime);
-        final String endTimeAsString = TwitterAdUtil.convertTimeToZuluFormatAndToUTC(endTime);
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + "/auction_insights";
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.GRANULARITY, granularity.toString()));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_START_TIME, startTimeAsString));
-
-        if (TwitterAdUtil.isNotNullOrEmpty(endTimeAsString)) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_END_TIME, endTimeAsString));
-        }
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_LINE_ITEM_IDS, TwitterAdUtil.getCsv(lineItemIds)));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAMS_PLACEMENT, placement.name()));
-
-        final Type type = new TypeToken<BaseAdsListResponse<TwitterAuctionInsights>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
-    }
-
     @Override
     public BaseAdsResponse<JobDetails> createAsyncJob(String accountId, TwitterEntityType twitterEntityType, Collection<String> ids, String startTime,
                                                       String endTime, boolean withDeleted, Granularity granularity, Placement placement,
@@ -165,30 +104,6 @@ public class TwitterAdsStatApiImpl implements TwitterAdsStatApi {
         final Type type = new TypeToken<BaseAdsListResponse<TwitterEntityStatistics>>() {
         }.getType();
         return new Gson().fromJson(responseAsString, type);
-    }
-
-    @Override
-    public BaseAdsListResponseIterable<TwitterAdStatistics> fetchCampaignStats(String accountId, Collection<String> campaignIds, long startTime,
-                                                                               long endTime) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, TwitterAdsConstants.ACCOUNT_ID);
-        TwitterAdUtil.ensureNotNull(startTime, "startTime");
-        TwitterAdUtil.ensureNotNull(campaignIds, "campaignIds");
-
-        final String startTimeAsString = TwitterAdUtil.convertTimeToZuluFormatAndToUTC(startTime);
-        final String endTimeAsString = TwitterAdUtil.convertTimeToZuluFormatAndToUTC(endTime);
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_STATS_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_REACH_STATS;
-
-        final List<HttpParameter> params = new ArrayList<>();
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_CAMPAIGN_IDS, TwitterAdUtil.getCsv(campaignIds)));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_START_TIME, startTimeAsString));
-        if (TwitterAdUtil.isNotNullOrEmpty(endTimeAsString)) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_END_TIME, endTimeAsString));
-        }
-
-        final Type type = new TypeToken<BaseAdsListResponse<TwitterAdStatistics>>() {
-        }.getType();
-
-        return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
     }
 
     @Override

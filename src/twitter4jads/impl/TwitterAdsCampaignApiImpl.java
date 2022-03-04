@@ -5,19 +5,14 @@ import twitter4jads.*;
 import twitter4jads.api.TwitterAdsCampaignApi;
 import twitter4jads.BaseAdsListResponse;
 import twitter4jads.BaseAdsListResponseIterable;
-import twitter4jads.BaseAdsResponse;
 import twitter4jads.TwitterAdsClient;
 import twitter4jads.internal.http.HttpParameter;
 import twitter4jads.internal.models4j.TwitterException;
 import twitter4jads.models.ads.Campaign;
-import twitter4jads.models.ads.EntityStatus;
-import twitter4jads.models.ads.HttpVerb;
 import twitter4jads.models.ads.sort.CampaignSortByField;
 import twitter4jads.util.TwitterAdUtil;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -66,108 +61,8 @@ public class TwitterAdsCampaignApiImpl implements TwitterAdsCampaignApi {
         return twitterAdsClient.executeHttpListRequest(baseUrl, params, type);
     }
 
-    @Override
-    public BaseAdsResponse<Campaign> getCampaignById(String accountId, String campaignId, boolean withDeleted) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, "accountId");
-        TwitterAdUtil.ensureNotNull(campaignId, "campaignId");
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_CAMPAIGN + campaignId;
-        final HttpParameter[] params = new HttpParameter[]{new HttpParameter(TwitterAdsConstants.PARAM_WITH_DELETED, withDeleted)};
-
-        final Type type = new TypeToken<BaseAdsResponse<Campaign>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpRequest(baseUrl, params, type, HttpVerb.GET);
-    }
-
-    @Override
-    public BaseAdsResponse<Campaign> createCampaign(String accountId, Campaign campaign) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, "Account Id");
-
-        final List<HttpParameter> params = validateCreateCampaignParameters(campaign);
-        HttpParameter[] parameters = null;
-        if (!params.isEmpty()) {
-            parameters = params.toArray(new HttpParameter[0]);
-        }
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_CAMPAIGN;
-        Type type = new TypeToken<BaseAdsResponse<Campaign>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpRequest(baseUrl, parameters, type, HttpVerb.POST);
-    }
-
-    @Override
-    public BaseAdsResponse<Campaign> updateCampaign(String accountId, String campaignId, Optional<String> name,
-                                                    Long totalBudgetAmountLocalMicro, Optional<Long> dailyBudgetAmountLocalMicro, Optional<String> startTime,
-                                                    Optional<String> endTime, EntityStatus status,
-                                                    Optional<Boolean> standardDelivery, int frequencyCap, int durationInDays) throws TwitterException {
-
-        final List<HttpParameter> params =
-                validateUpdateCampaignParameters(accountId, campaignId, name, totalBudgetAmountLocalMicro, dailyBudgetAmountLocalMicro, startTime,
-                        endTime, status, standardDelivery, frequencyCap, durationInDays);
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_CAMPAIGN + campaignId;
-        final Type type = new TypeToken<BaseAdsResponse<Campaign>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpRequest(baseUrl, params.toArray(new HttpParameter[0]), type, HttpVerb.PUT);
-
-    }
-
-    @Override
-    public BaseAdsResponse<Campaign> deleteCampaign(String accountId, String campaignId) throws TwitterException {
-        TwitterAdUtil.ensureNotNull(accountId, "Account Id");
-        TwitterAdUtil.ensureNotNull(campaignId, "Campaign Id");
-
-        final String baseUrl = twitterAdsClient.getBaseAdsAPIUrl() + TwitterAdsConstants.PREFIX_ACCOUNTS_URI + accountId + TwitterAdsConstants.PATH_CAMPAIGN + campaignId;
-        final Type type = new TypeToken<BaseAdsResponse<Campaign>>() {
-        }.getType();
-        return twitterAdsClient.executeHttpRequest(baseUrl, null, type, HttpVerb.DELETE);
-    }
 
     // ------------------------------------------------------------------------ PRIVATE METHODS -----------------------------------------------------
-
-    private List<HttpParameter> validateCreateCampaignParameters(Campaign campaign) {
-        TwitterAdUtil.ensureNotNull(campaign.getName(), "Name");
-        final String name = campaign.getName();
-
-        TwitterAdUtil.ensureNotNull(campaign.getFundingInstrumentId(), "Funding Instrument ID");
-        final String fundingInstrumentId = campaign.getFundingInstrumentId();
-
-        TwitterAdUtil.ensureNotNull(campaign.getStartTime(), "Start Time");
-        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        final String startTime = df.format(campaign.getStartTime());
-
-        TwitterAdUtil.ensureNotNull(campaign.getDailyBudgetInMicro(), "Daily Budget Amount");
-        final Long dailyBudgetAmountLocalMicro = campaign.getDailyBudgetInMicro();
-
-        final List<HttpParameter> params = new ArrayList<>();
-        final Long totalBudgetAmountLocalMicro = campaign.getTotalBudgetInMicro();
-        if (totalBudgetAmountLocalMicro != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_TOTAL_BUDGET_AMOUNT_LOCAL_MICRO, totalBudgetAmountLocalMicro));
-        }
-
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_NAME, name));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_FUNDING_INSTRUMENT_ID, fundingInstrumentId));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_START_TIME, startTime));
-        params.add(new HttpParameter(TwitterAdsConstants.PARAM_DAILY_BUDGET_AMOUNT_LOCAL_MICRO, dailyBudgetAmountLocalMicro));
-
-        if (campaign.getEndTime() != null) {
-            String endTime = df.format(campaign.getEndTime());
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_END_TIME, endTime));
-        }
-        if (campaign.getEntityStatus() != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_ENTITY_STATUS, campaign.getEntityStatus()));
-        }
-        if (campaign.getStandardDelivery() != null) {
-            Boolean standardDelivery = campaign.getStandardDelivery();
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_STANDARD_DELIVERY, standardDelivery));
-        }
-        if (campaign.getFrequencyCap() != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_FREQUENCY_CAP, campaign.getFrequencyCap()));
-        }
-        if (campaign.getDurationInDays() != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_DURATION_IN_DAYS, campaign.getDurationInDays()));
-        }
-        return params;
-    }
 
     private List<HttpParameter> getCampaignParameters(String accountId, Optional<String> campaignIds, Optional<String> fundingInstrumentIds, boolean withDeleted,
                                                       Optional<Integer> count, Optional<String> cursor, Optional<String> q) {
@@ -193,51 +88,4 @@ public class TwitterAdsCampaignApiImpl implements TwitterAdsCampaignApi {
 
         return params;
     }
-
-    private List<HttpParameter> validateUpdateCampaignParameters(String accountId, String campaignId, Optional<String> name, Long totalBudgetAmountLocalMicro,
-                                                                 Optional<Long> dailyBudgetAmountLocalMicro, Optional<String> startTime,
-                                                                 Optional<String> endTime, EntityStatus status,
-                                                                 Optional<Boolean> standardDelivery, int frequencyCap, int durationInDays) {
-        TwitterAdUtil.ensureNotNull(accountId, "AccountId");
-        TwitterAdUtil.ensureNotNull(campaignId, "Campaign Id");
-        final List<HttpParameter> params = new ArrayList<>();
-        //The Ones that can be changed to null
-
-        //The Ones that can be changed to null
-        if (totalBudgetAmountLocalMicro == null || totalBudgetAmountLocalMicro >= 0) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_TOTAL_BUDGET_AMOUNT_LOCAL_MICRO, String.valueOf(totalBudgetAmountLocalMicro)));
-        }
-
-        if (endTime != null && endTime.isPresent()) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_END_TIME, String.valueOf(endTime)));
-        }
-        //The Ones that cannot be changed to null below
-        if (name != null && name.isPresent()) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_NAME, name.get()));
-        }
-        if (dailyBudgetAmountLocalMicro != null && dailyBudgetAmountLocalMicro.isPresent()) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_DAILY_BUDGET_AMOUNT_LOCAL_MICRO, dailyBudgetAmountLocalMicro.get()));
-        }
-        if (startTime != null && startTime.isPresent()) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_START_TIME, startTime.get()));
-        }
-        if (endTime != null && endTime.isPresent()) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_END_TIME, endTime.get()));
-        }
-        if (status != null) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_ENTITY_STATUS, status.name()));
-        }
-        if (standardDelivery != null && standardDelivery.isPresent()) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_STANDARD_DELIVERY, standardDelivery.get()));
-        }
-        if (frequencyCap > 0) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_FREQUENCY_CAP, frequencyCap));
-        }
-        if (durationInDays > 0) {
-            params.add(new HttpParameter(TwitterAdsConstants.PARAM_DURATION_IN_DAYS, durationInDays));
-        }
-
-        return params;
-    }
-
 }

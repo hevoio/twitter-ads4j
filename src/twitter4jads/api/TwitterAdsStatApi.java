@@ -20,27 +20,6 @@ public interface TwitterAdsStatApi {
 
     /**
      * @param accountId            The identifier for the leveraged account.
-     * @param twitterEntity        The enum of entity type (e.g. LINE_ITEM, PROMOTED_TWEET).
-     * @param ids                  A collection of ids to retrieve stats for.
-     * @param startTime            The time to retrieve stats from.
-     * @param endTime              The time to retrieve stats until.
-     * @param withDeleted          Whether or not to include deleted items in the results. Defaults to false.
-     * @param granularity          The granularity as enum such as DAY or HOUR.
-     * @param placement            The placement of entity to retrieve stats for.
-     * @return analytics data for the given parameters
-     * @throws TwitterException
-     * @see <a href="https://dev.twitter.com/ads/reference/1/get/stats/accounts/%3Aaccount_id">https://dev.twitter.com/ads/reference/1/get/stats/accounts/%3Aaccount_id</a>
-     */
-    BaseAdsListResponseIterable<TwitterEntityStatistics> fetchStatsSync(String accountId, TwitterEntityType twitterEntity, Collection<String> ids,
-                                                                        long startTime, long endTime, boolean withDeleted, Granularity granularity,
-                                                                        Placement placement) throws TwitterException;
-
-    BaseAdsListResponseIterable<TwitterAuctionInsights> fetchAuctionInsights(String accountId, Collection<String> lineItemIds, long startTime,
-                                                                             long endTime, Granularity granularity, Placement placement)
-        throws TwitterException;
-
-    /**
-     * @param accountId            The identifier for the leveraged account.
      * @param twitterEntityType        The enum of entity type (e.g. LINE_ITEM, PROMOTED_TWEET).
      * @param ids                  A collection of ids to retrieve stats for.
      * @param startTime            The time to retrieve stats from.
@@ -75,18 +54,6 @@ public interface TwitterAdsStatApi {
      * @see <a href="https://dev.twitter.com/ads/reference/1/get/stats/jobs/accounts/%3Aaccount_id">https://dev.twitter.com/ads/reference/1/get/stats/jobs/accounts/%3Aaccount_id</a>
      */
     BaseAdsListResponse<TwitterEntityStatistics> fetchJobDataAsync(String dataUrl) throws TwitterException;
-
-
-    /**
-     * @param accountId         The identifier for the leveraged account.
-     * @param campaignIds       Campaign ids to fetch stats for.
-     * @param startTime         Start time.
-     * @param endTime           End time.
-     * @return  statistics response
-     * @throws TwitterException
-     */
-    BaseAdsListResponseIterable<TwitterAdStatistics> fetchCampaignStats(String accountId, Collection<String> campaignIds, long startTime,
-                                                                        long endTime) throws TwitterException;
 
     BaseAdsResponse<JobDetails> deleteJob(String accountId, String jobId) throws TwitterException;
 
