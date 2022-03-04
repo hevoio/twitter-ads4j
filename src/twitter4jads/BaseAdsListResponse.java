@@ -1,6 +1,7 @@
 package twitter4jads;
 
 import com.google.gson.annotations.SerializedName;
+import twitter4jads.internal.models4j.JobLimitStatus;
 import twitter4jads.internal.models4j.RateLimitStatus;
 import twitter4jads.internal.models4j.TwitterResponse;
 import twitter4jads.models.ads.RequestParameters;
@@ -35,6 +36,8 @@ public class BaseAdsListResponse<T> implements Serializable, TwitterResponse {
     private Long count;
 
     private RateLimitStatus rateLimitStatus;
+
+    private JobLimitStatus jobLimitStatus;
 
     private int accessLevel;
 
@@ -85,6 +88,14 @@ public class BaseAdsListResponse<T> implements Serializable, TwitterResponse {
 
     public void setRateLimitStatus(RateLimitStatus rateLimitStatus) {
         this.rateLimitStatus = rateLimitStatus;
+    }
+
+    public JobLimitStatus getJobLimitStatus() {
+        return jobLimitStatus;
+    }
+
+    public void setJobLimitStatus(JobLimitStatus jobLimitStatus) {
+        this.jobLimitStatus = jobLimitStatus;
     }
 
     @Override

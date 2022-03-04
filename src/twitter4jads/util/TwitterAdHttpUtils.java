@@ -1,5 +1,6 @@
 package twitter4jads.util;
 
+import twitter4jads.internal.models4j.JobLimitStatusImpl;
 import twitter4jads.internal.models4j.RateLimitStatusImpl;
 import twitter4jads.internal.http.HttpResponse;
 
@@ -63,5 +64,22 @@ public class TwitterAdHttpUtils {
         }
 
         return new RateLimitStatusImpl(remainingHits, limit, resetTimeInSeconds, costValue);
+    }
+
+    public static JobLimitStatusImpl getJobLimitDataFromResponseHeader(HttpResponse res) {
+        int limit = 0;
+        int remaining = 0;
+
+        String strLimit = res.getResponseHeader("X-Concurrent-Job-Limit");
+        if(strLimit !=null) {
+            limit = Integer.parseInt(strLimit);
+        }
+
+        String strRemaining = res.getResponseHeader("X-Concurrent-Job-Limit-Remaining");
+        if(strRemaining != null) {
+            remaining = Integer.parseInt(strRemaining);
+        }
+
+        return new JobLimitStatusImpl(limit,remaining);
     }
 }
