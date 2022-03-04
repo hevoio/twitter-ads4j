@@ -64,6 +64,16 @@ public final class TwitterAdUtil {
         }
     }
 
+    public static <T> void ensureNotEmpty(Collection<T> collection, String name) {
+        if (!isNotEmpty(collection)) {
+            throw new IllegalArgumentException(name + " can not be null or empty.");
+        }
+    }
+
+    public static <T> boolean isEmpty(Collection<T> collection) {
+        return collection == null || collection.size() == 0;
+    }
+
     public static <T> boolean isNotEmpty(Collection<T> collection) {
         return collection != null && collection.size() != 0;
     }
@@ -75,6 +85,18 @@ public final class TwitterAdUtil {
             }
         }
         return true;
+    }
+
+    public static String getDelimiterSeparatedMethod(final Collection<String> values, String delimiter) {
+        if (values == null || values.isEmpty()) {
+            return "";
+        }
+        String rv = "";
+        for (String value : values) {
+            rv = rv + value + delimiter;
+        }
+        rv = rv.substring(0, rv.length() - 1);
+        return rv;
     }
 
     public static <E> List<E> createMutableList(Collection<E> collection) {
