@@ -3,6 +3,7 @@ package twitter4jads.models.ads;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Tweet implements Serializable {
 
@@ -85,5 +86,5 @@ public class Tweet implements Serializable {
     private String place;
 
     @SerializedName("contributors")
-    private String contributors;
+    private ArrayList<String> contributors;
 }
