@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class TwitterUser implements Serializable {
 
     @SerializedName("id")
-    private Long id;
+    private String id;
 
     @SerializedName("id_str")
     private String idString;

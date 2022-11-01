@@ -10,7 +10,7 @@ import java.util.Map;
 public class MediaEntity {
 
     @SerializedName("id")
-    private Long id;
+    private String id;
 
     @SerializedName("id_str")
     private String idString;

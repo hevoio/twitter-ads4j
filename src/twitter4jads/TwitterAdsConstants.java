@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface TwitterAdsConstants {
 
-    String CURRENT_VERSION = "10";
+    String CURRENT_VERSION = "11";
 
     String PREFIX_ACCOUNTS_URI = CURRENT_VERSION + "/accounts/";
     String PREFIX_STATS_ACCOUNTS_URI = CURRENT_VERSION + "/stats/accounts/";

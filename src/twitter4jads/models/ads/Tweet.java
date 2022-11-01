@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Tweet implements Serializable {
 
     @SerializedName("id")
-    private Long id;
+    private String id;
 
     @SerializedName("id_str")
     private String idStr;
