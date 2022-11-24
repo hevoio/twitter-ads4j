@@ -82,9 +82,6 @@ public class LineItem extends TwitterEntity implements Serializable {
     @SerializedName("categories")
     private String[] categories;
 
-    @SerializedName("optimization")
-    private String optimization;
-
     @SerializedName("creative_source")
     private String creativeSource;
 
@@ -112,14 +109,6 @@ public class LineItem extends TwitterEntity implements Serializable {
 
     public void setCreativeSource(String creativeSource) {
         this.creativeSource = creativeSource;
-    }
-
-    public String getOptimization() {
-        return optimization;
-    }
-
-    public void setOptimization(String optimization) {
-        this.optimization = optimization;
     }
 
     public Long getBidAmtInMicro() {
@@ -370,7 +359,6 @@ public class LineItem extends TwitterEntity implements Serializable {
                 ", categories=" + Arrays.toString(categories) +
                 ", startTime=" + startTimeInUTC +
                 ", endTime=" + endTimeInUTC +
-                ", optimization='" + optimization + '\'' +
                 ", creativeSource='" + creativeSource + '\'' +
                 ", budget='" + budget + '\'' +
                 ", bidStrategy='" + bidStrategy + '\'' +
