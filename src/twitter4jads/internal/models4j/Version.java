@@ -1,7 +1,9 @@
 package twitter4jads.internal.models4j;
 
+import static twitter4jads.TwitterAdsConstants.CURRENT_VERSION;
+
 public final class Version {
-    private static final String VERSION = "10.0";
+    private static final String VERSION = CURRENT_VERSION;
     private static final String TITLE = "Twitter4JAds";
 
     private Version() {
